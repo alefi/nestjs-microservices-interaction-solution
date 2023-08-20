@@ -1,0 +1,26 @@
+// Style guide @see https://developers.google.com/protocol-buffers/docs/style and https://docs.buf.build/best-practices/style-guide
+
+syntax = "proto3";
+
+package game_service.v1;
+
+service GameService {
+  rpc ListGames(ListGamesParamsDto) returns (ListGamesDto) {}
+}
+
+message GameDto {
+  string id = 1;
+  string name = 2;
+  string created_at = 3;
+  string updated_at = 4;
+}
+
+message ListGamesParamsDto {
+  optional bool is_available = 1;
+}
+
+message ListGamesDto {
+  // If items is empty, only total would be passed
+  repeated GameDto items = 1;
+  int32 total = 2;
+}

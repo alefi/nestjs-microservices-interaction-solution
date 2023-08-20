@@ -1,0 +1,6 @@
+# Artifacts:
+build
+coverage
+
+# Proto buf typings:
+**/*.pb.ts

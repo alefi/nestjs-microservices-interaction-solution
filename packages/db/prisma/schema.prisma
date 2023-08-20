@@ -1,0 +1,158 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "auth", "gaming", "wallet"]
+}
+
+enum AuthMethod {
+  local
+  social
+
+  @@map("auth_method")
+  @@schema("auth")
+}
+
+enum Currency {
+  RUR
+  USD
+
+  @@map("currency")
+  @@schema("public")
+}
+
+enum Status {
+  pending
+  success
+  failure
+
+  @@map("status")
+  @@schema("public")
+}
+
+// *** Auth section ***
+
+model User {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String?
+  displayName String? @map("display_name")
+
+  email            String?
+  isEmailConfirmed Boolean @map("is_email_confirmed")
+
+  // The phone number is stored using the following distinct fields
+  diallingCode     String?  @map("dialling_code")
+  phoneNumber      String?  @map("phone_number")
+  isPhoneConfirmed Boolean? @map("is_phone_confirmed") // Nullable: true. It is a workaround that gives an advantage to use unique index only for a verified phone.
+
+  authMethod AuthMethod @map("auth_method")
+
+  isActive Boolean @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  walletAccounts WalletAccount[] @relation("WalletAccountUser")
+
+  // Prisma doesn't support partial indexes at all, it impossible to add it by hands
+  // because a next migration runner would try to create new migration again, and again.
+  // So, we are using isPhoneConfirmed as null for unconfirmed ones, instead of `false`.
+  @@unique([diallingCode, phoneNumber, isPhoneConfirmed])
+  @@map("users")
+  @@schema("auth")
+}
+
+// *** /Auth section ***
+
+// *** Gaming section ***
+
+model Game {
+  id String @id @default(uuid()) @db.Uuid
+
+  name String
+
+  isAvailable Boolean @map("is_available")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  sessions GameSession[] @relation("GameSessionGame")
+
+  @@map("games")
+  @@schema("gaming")
+}
+
+model GameSession {
+  id String @id @default(uuid()) @db.Uuid
+
+  game   Game   @relation("GameSessionGame", fields: [gameId], references: [id])
+  gameId String @map("game_id") @db.Uuid
+
+  // Here could be an additional game session details.
+
+  startAt  DateTime @map("start_at") @db.Timestamptz
+  finishAt DateTime @map("finish_at") @db.Timestamptz
+
+  isFinished Boolean @map("is_finished")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("game_sessions")
+  @@schema("gaming")
+}
+
+// *** /Gaming section ***
+
+// *** Wallet section ***
+
+model WalletAccount {
+  id String @id @default(uuid()) @db.Uuid
+
+  user   User   @relation("WalletAccountUser", fields: [userId], references: [id])
+  userId String @map("user_id") @db.Uuid
+
+  currency Currency
+
+  isAvailable Boolean @map("is_available")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  WalletEntry WalletEntry[] @relation("WalletEntryWallet")
+
+  @@unique([userId, currency])
+  @@map("wallet_accounts")
+  @@schema("wallet")
+}
+
+model WalletEntry {
+  id String @id @default(uuid()) @db.Uuid
+
+  walletAccount   WalletAccount @relation("WalletEntryWallet", fields: [walletAccountId], references: [id])
+  walletAccountId String        @map("wallet_account_id") @db.Uuid
+
+  reference String
+
+  amount   Decimal
+  currency Currency
+  status   Status
+
+  postedAt DateTime @map("posted_at") @db.Timestamptz
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@unique([reference, walletAccountId])
+  @@map("wallet_entries")
+  @@schema("wallet")
+}
+
+// *** /Wallet section ***

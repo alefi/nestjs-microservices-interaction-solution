@@ -1,0 +1,10 @@
+[*]
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.{ts,js}]
+indent_size = 2
+quote_type = single
+
+[*.json]
+indent_size = 2

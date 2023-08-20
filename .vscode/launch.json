@@ -1,0 +1,48 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug gw web",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/gw-web",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "envFile": "${workspaceFolder}/apps/gw-web/.env.dev",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug game",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/game",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "envFile": "${workspaceFolder}/apps/game/.env.dev",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug user",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/user",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "envFile": "${workspaceFolder}/apps/user/.env.dev",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug wallet",
+      "runtimeExecutable": "npm",
+      "cwd": "${workspaceFolder}/apps/wallet",
+      "runtimeArgs": ["run-script", "start:debug"],
+      "envFile": "${workspaceFolder}/apps/wallet/.env.dev",
+      "console": "integratedTerminal"
+    }
+  ]
+}

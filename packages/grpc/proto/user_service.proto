@@ -1,0 +1,26 @@
+// Style guide @see https://developers.google.com/protocol-buffers/docs/style and https://docs.buf.build/best-practices/style-guide
+
+syntax = "proto3";
+
+package user_service.v1;
+
+import "shared/struct.proto";
+
+service UserService {
+  rpc GetUserById(struct.v1.GetEntityById) returns (UserDto) {}
+}
+
+message UserDto {
+  string id = 1;
+  string name = 2;
+  optional string display_name = 3;
+  optional string email = 4;
+  bool is_email_confirmed = 5;
+  optional string dialling_code = 6;
+  optional string phone_number = 7;
+  optional bool is_phone_confirmed = 8;
+  string auth_method = 9;
+  bool is_active = 10;
+  string created_at = 11;
+  string updated_at = 12;
+}

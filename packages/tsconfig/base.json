@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "display": "Default",
+  "compilerOptions": {
+    "declaration": true,
+    "removeComments": true,
+    "noEmit": true,
+    "noEmitOnError": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "strictBindCallApply": false,
+    "strictPropertyInitialization": false,
+    "useUnknownInCatchVariables": false,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["../../node_modules/@types"]
+  }
+}

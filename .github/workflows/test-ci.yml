@@ -1,0 +1,28 @@
+name: Build, Lint & Test
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build_and_test:
+    name: Node project - latest
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain:
+          - stable
+          - beta
+          - nightly
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: .node-version
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run test

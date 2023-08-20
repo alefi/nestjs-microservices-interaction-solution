@@ -1,0 +1,14 @@
+// Style guide @see https://developers.google.com/protocol-buffers/docs/style and https://docs.buf.build/best-practices/style-guide
+
+syntax = "proto3";
+
+package struct.v1;
+
+message GetEntityById {
+  string id = 1;
+}
+
+message OperationResult {
+  string id = 1;
+  optional string status = 2;
+}

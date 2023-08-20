@@ -1,0 +1,35 @@
+{
+  "name": "nestjs-microservices-interaction-solution",
+  "private": true,
+  "author": {
+    "name": "Aleksei Efimov",
+    "email": "alefi@mail.ru",
+    "url": "https://linkedin.com/in/alefi"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,md}\"",
+    "clean": "turbo run clean --parallel"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.9.7",
+    "dotenv-cli": "latest",
+    "eslint": "^8.46.0",
+    "eslint-config-custom": "*",
+    "prettier": "^3.0.2",
+    "turbo": "latest",
+    "typescript": "5.1.6"
+  },
+  "engines": {
+    "node": ">=20.5.0"
+  },
+  "packageManager": "npm@9.8.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

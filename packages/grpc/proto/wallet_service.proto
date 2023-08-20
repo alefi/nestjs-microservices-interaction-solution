@@ -1,0 +1,50 @@
+// Style guide @see https://developers.google.com/protocol-buffers/docs/style and https://docs.buf.build/best-practices/style-guide
+
+syntax = "proto3";
+
+package wallet_service.v1;
+
+import "shared/struct.proto";
+
+service WalletService {
+  rpc AuthorizeFunds(AuthoriseFundsParamsDto) returns (struct.v1.OperationResult) {}
+  rpc CommitFunds(CommitFundsParamsDto) returns (struct.v1.OperationResult) {}
+  rpc ListWallets(ListWalletAccountsParamsDto) returns (ListWalletAccountsDto) {}
+  rpc ReleaseFunds(ReleaseFundsParamsDto) returns (struct.v1.OperationResult) {}
+}
+
+message AuthoriseFundsParamsDto {
+  string user_id = 1;
+  string reference = 2;
+  string currency = 3;
+  string amount = 4;
+}
+
+message CommitFundsParamsDto {
+  string wallet_entry_id = 1;
+}
+
+message ListWalletAccountsDto {
+  // If items is empty, only total would be passed
+  repeated WalletAccountDto items = 1;
+  int32 total = 2;
+}
+
+message ListWalletAccountsParamsDto {
+  string user_id = 1;
+  optional bool is_available = 2;
+}
+
+message ReleaseFundsParamsDto {
+  string wallet_entry_id = 1;
+}
+
+message WalletAccountDto {
+  string id = 1;
+  string currency = 2;
+  string amount = 3;
+  string authorised_amount = 4;
+  bool is_available = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}

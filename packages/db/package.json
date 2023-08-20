@@ -1,0 +1,46 @@
+{
+  "name": "@lib/db",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "main": "dist/index",
+  "types": "src/index",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "db:migrate:create-only": "dotenv -e ../../.env.local -- prisma migrate dev --create-only",
+    "db:migrate": "dotenv -e ../../.env.local -- prisma migrate dev --skip-seed",
+    "db:push": "dotenv -e ../../.env.local -- prisma db push --skip-generate --skip-seed",
+    "db:reset:dev": "dotenv -e ../../.env.local -- prisma migrate reset --force",
+    "db:reset": "dotenv -e ../../.env.local -- prisma migrate reset --skip-seed",
+    "db:seed": "dotenv -e ../../.env.dev prisma db seed",
+    "build:prisma": "dotenv -e ../../.env.local prisma generate",
+    "format:prisma": "dotenv -e ../../.env.local -- prisma format",
+    "prebuild": "npm run build:prisma",
+    "build": "nest build",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "lint-and-fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "clean": "rm -rf .turbo dist node_modules"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@types/node": "^20.4.8",
+    "prisma": "5.1.1",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@prisma/client": "5.1.1",
+    "eslint-config-custom": "*"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "10.1.3",
+    "@nestjs/config": "3.0.0",
+    "@nestjs/core": "10.1.3",
+    "@nestjs/schematics": "10.0.2",
+    "dotenv-cli": "latest"
+  },
+  "prisma": {
+    "seed": "ts-node contrib/seed.ts"
+  }
+}
