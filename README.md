@@ -46,6 +46,7 @@ This code is provided as a PoC and it could be improved. For instance:
 - add tests for real business cases
 - better exception handling, including creation of business level exceptions and map them on appropriated layers
 - use some accounting library for financial operations
+- get rid of DRY principle violation in several places on codebase
 - use [Temporal](https://temporal.io) for a process orchestration
 
 ## Usage
@@ -56,6 +57,8 @@ Please read this section carefully.
 
 - `NODE_ENV`: (optional)
 - `DATABASE_URL`: Services use it for connecting to a database
+- `REDIS_HOST`: The game service use Redis to manage task queue; host to connect
+- `REDIS_PORT`: The game service use Redis to manage task queue; port to connect
 - `GAME_SERVICE_GRPC_URL`: Url for connecting to game service through the gRpc transport
 - `USER_SERVICE_GRPC_URL`: Url for connecting to user service through the gRpc transport
 - `WALLET_SERVICE_GRPC_URL`: Url for connecting to wallet service through the gRpc transport
@@ -88,7 +91,7 @@ npm run test
 
 > 📝 _Make sure nodejs and npm are installed._
 
-It needs that Postgres instance accepts connections. This repository has a [docker-compose](./docker/docker-compose.yaml) file for easily run Postgres locally.
+It needs that Postgres and Redis instances accept connections. This repository has a [docker-compose](./docker/docker-compose.yaml) file for easily run Postgres and Redis locally.
 
 ```console
 cd docker

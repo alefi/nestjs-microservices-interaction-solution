@@ -29,6 +29,14 @@ services:
       - postgres
     restart: unless-stopped
 
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis:/data/dedis
+    restart: unless-stopped
+
 networks:
   postgres:
     driver: bridge
@@ -36,3 +44,4 @@ networks:
 volumes:
   postgres:
   pgadmin:
+  redis:
