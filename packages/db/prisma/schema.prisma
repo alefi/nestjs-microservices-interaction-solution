@@ -96,7 +96,9 @@ model GameEvent {
   game   Game   @relation("GameEventGame", fields: [gameId], references: [id])
   gameId String @map("game_id") @db.Uuid
 
-  simultaneousSessionsCount Int @default(1) @map("simultaneous_sessions_count")
+  name                      String?
+  displayName               String? @map("display_name")
+  simultaneousSessionsCount Int     @default(1) @map("simultaneous_sessions_count")
 
   // Here could be an additional game event details, like the following or others:
   // interSessionsDelaySeconds Int? @map("inter_sessions_delay_seconds")
