@@ -9,7 +9,7 @@ export class UserGrpcController {
   constructor(private readonly userService: UserService) {}
 
   @GrpcMethod('UserService')
-  async getUserById(getByIdParams: StructV1.GetEntityById): Promise<UserDto> {
+  async getUserById(getByIdParams: StructV1.GetEntityByIdParamsDto): Promise<UserDto> {
     const user = await this.userService.getUserById(getByIdParams);
     return UserDto.fromModel(user);
   }

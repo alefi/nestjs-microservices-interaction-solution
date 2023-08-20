@@ -1,18 +1,32 @@
-import { ConfigModule } from '@nestjs/config';
+import { BullModule } from '@nestjs/bull';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 import { configParserFactory, ExceptionInterceptor } from '@lib/utils';
 import { config, ConfigSchema } from './config';
 import { GameModule } from './game';
-
+import { QueueModule } from './queue';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       validate: configParserFactory<ConfigSchema>(config),
+    }),
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        redis: {
+          // TODO Turn it on after testing:
+          // lazyConnect: true,
+          host: configService.get('REDIS_HOST'),
+          port: configService.get('REDIS_PORT'),
+        },
+      }),
     }),
 
     GameModule,
+    QueueModule,
   ],
 
   /**

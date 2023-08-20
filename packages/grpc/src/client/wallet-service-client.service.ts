@@ -2,7 +2,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-import { OperationResult } from '../typings/shared/struct.pb';
+import { OperationResultDto } from '../typings/shared/struct.pb';
 import {
   AuthoriseFundsParamsDto,
   CommitFundsParamsDto,
@@ -20,11 +20,11 @@ export class WalletServiceClientService implements WalletServiceClient, OnModule
 
   constructor(@Inject(WALLET_SERVICE_V1_PACKAGE_NAME) private client: ClientGrpc) {}
 
-  authorizeFunds(request: AuthoriseFundsParamsDto): Observable<OperationResult> {
+  authorizeFunds(request: AuthoriseFundsParamsDto): Observable<OperationResultDto> {
     return this.walletServiceClient.authorizeFunds(request);
   }
 
-  commitFunds(request: CommitFundsParamsDto): Observable<OperationResult> {
+  commitFunds(request: CommitFundsParamsDto): Observable<OperationResultDto> {
     return this.walletServiceClient.commitFunds(request);
   }
 
@@ -32,7 +32,7 @@ export class WalletServiceClientService implements WalletServiceClient, OnModule
     return this.walletServiceClient.listWallets(request);
   }
 
-  releaseFunds(request: ReleaseFundsParamsDto): Observable<OperationResult> {
+  releaseFunds(request: ReleaseFundsParamsDto): Observable<OperationResultDto> {
     return this.walletServiceClient.releaseFunds(request);
   }
 

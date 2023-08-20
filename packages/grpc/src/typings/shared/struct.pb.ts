@@ -2,16 +2,16 @@
 
 export const protobufPackage = "struct.v1";
 
-export interface CurrencyAmount {
+export interface CurrencyAmountDto {
   currency: string;
   amount: string;
 }
 
-export interface GetEntityById {
+export interface GetEntityByIdParamsDto {
   id: string;
 }
 
-export interface OperationResult {
+export interface OperationResultDto {
   id: string;
   status?: string | undefined;
 }

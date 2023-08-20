@@ -2,7 +2,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-import { GetEntityById } from '../typings/shared/struct.pb';
+import { GetEntityByIdParamsDto } from '../typings/shared/struct.pb';
 import {
   USER_SERVICE_NAME,
   USER_SERVICE_V1_PACKAGE_NAME,
@@ -16,7 +16,7 @@ export class UserServiceClientService implements UserServiceClient, OnModuleInit
 
   constructor(@Inject(USER_SERVICE_V1_PACKAGE_NAME) private client: ClientGrpc) {}
 
-  getUserById(request: GetEntityById): Observable<UserDto> {
+  getUserById(request: GetEntityByIdParamsDto): Observable<UserDto> {
     return this.userServiceClient.getUserById(request);
   }
 

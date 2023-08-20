@@ -4,7 +4,7 @@ import { StructV1, WalletServiceV1 } from '@lib/grpc';
 import { IAuthorisedCurrencyAmount } from '@lib/utils';
 
 export class WalletAccountDto
-  implements WalletServiceV1.WalletAccountDto, StructV1.CurrencyAmount, IAuthorisedCurrencyAmount
+  implements WalletServiceV1.WalletAccountDto, StructV1.CurrencyAmountDto, IAuthorisedCurrencyAmount
 {
   readonly id: string;
   readonly currency: string;

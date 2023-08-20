@@ -2,7 +2,7 @@
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { OperationResult } from "./shared/struct.pb";
+import { OperationResultDto } from "./shared/struct.pb";
 
 export const protobufPackage = "wallet_service.v1";
 
@@ -45,25 +45,25 @@ export interface WalletAccountDto {
 export const WALLET_SERVICE_V1_PACKAGE_NAME = "wallet_service.v1";
 
 export interface WalletServiceClient {
-  authorizeFunds(request: AuthoriseFundsParamsDto, metadata?: Metadata): Observable<OperationResult>;
+  authorizeFunds(request: AuthoriseFundsParamsDto, metadata?: Metadata): Observable<OperationResultDto>;
 
-  commitFunds(request: CommitFundsParamsDto, metadata?: Metadata): Observable<OperationResult>;
+  commitFunds(request: CommitFundsParamsDto, metadata?: Metadata): Observable<OperationResultDto>;
 
   listWallets(request: ListWalletAccountsParamsDto, metadata?: Metadata): Observable<ListWalletAccountsDto>;
 
-  releaseFunds(request: ReleaseFundsParamsDto, metadata?: Metadata): Observable<OperationResult>;
+  releaseFunds(request: ReleaseFundsParamsDto, metadata?: Metadata): Observable<OperationResultDto>;
 }
 
 export interface WalletServiceController {
   authorizeFunds(
     request: AuthoriseFundsParamsDto,
     metadata?: Metadata,
-  ): Promise<OperationResult> | Observable<OperationResult> | OperationResult;
+  ): Promise<OperationResultDto> | Observable<OperationResultDto> | OperationResultDto;
 
   commitFunds(
     request: CommitFundsParamsDto,
     metadata?: Metadata,
-  ): Promise<OperationResult> | Observable<OperationResult> | OperationResult;
+  ): Promise<OperationResultDto> | Observable<OperationResultDto> | OperationResultDto;
 
   listWallets(
     request: ListWalletAccountsParamsDto,
@@ -73,7 +73,7 @@ export interface WalletServiceController {
   releaseFunds(
     request: ReleaseFundsParamsDto,
     metadata?: Metadata,
-  ): Promise<OperationResult> | Observable<OperationResult> | OperationResult;
+  ): Promise<OperationResultDto> | Observable<OperationResultDto> | OperationResultDto;
 }
 
 export function WalletServiceControllerMethods() {

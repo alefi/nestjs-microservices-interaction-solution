@@ -2,7 +2,7 @@
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { GetEntityById } from "./shared/struct.pb";
+import { GetEntityByIdParamsDto } from "./shared/struct.pb";
 
 export const protobufPackage = "user_service.v1";
 
@@ -24,11 +24,11 @@ export interface UserDto {
 export const USER_SERVICE_V1_PACKAGE_NAME = "user_service.v1";
 
 export interface UserServiceClient {
-  getUserById(request: GetEntityById, metadata?: Metadata): Observable<UserDto>;
+  getUserById(request: GetEntityByIdParamsDto, metadata?: Metadata): Observable<UserDto>;
 }
 
 export interface UserServiceController {
-  getUserById(request: GetEntityById, metadata?: Metadata): Promise<UserDto> | Observable<UserDto> | UserDto;
+  getUserById(request: GetEntityByIdParamsDto, metadata?: Metadata): Promise<UserDto> | Observable<UserDto> | UserDto;
 }
 
 export function UserServiceControllerMethods() {

@@ -7,10 +7,10 @@ package wallet_service.v1;
 import "shared/struct.proto";
 
 service WalletService {
-  rpc AuthorizeFunds(AuthoriseFundsParamsDto) returns (struct.v1.OperationResult) {}
-  rpc CommitFunds(CommitFundsParamsDto) returns (struct.v1.OperationResult) {}
+  rpc AuthorizeFunds(AuthoriseFundsParamsDto) returns (struct.v1.OperationResultDto) {}
+  rpc CommitFunds(CommitFundsParamsDto) returns (struct.v1.OperationResultDto) {}
   rpc ListWallets(ListWalletAccountsParamsDto) returns (ListWalletAccountsDto) {}
-  rpc ReleaseFunds(ReleaseFundsParamsDto) returns (struct.v1.OperationResult) {}
+  rpc ReleaseFunds(ReleaseFundsParamsDto) returns (struct.v1.OperationResultDto) {}
 }
 
 message AuthoriseFundsParamsDto {

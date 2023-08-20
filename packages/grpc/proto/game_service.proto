@@ -4,8 +4,48 @@ syntax = "proto3";
 
 package game_service.v1;
 
+import "shared/struct.proto";
+
 service GameService {
+  rpc ApplyBid(ApplyBidParamsDto) returns (struct.v1.OperationResultDto) {}
+  rpc BeginGameEvent(BeginGameEventParamsDto) returns (GameEventDto) {}
+  rpc EndGameEvent(EndGameEventParamsDto) returns (GameEventDto) {}
+  rpc GetGameEventById(struct.v1.GetEntityByIdParamsDto) returns (GameEventDto) {}
+  rpc ListGameEvents(ListGameEventsParamsDto) returns (ListGameEventsDto) {}
   rpc ListGames(ListGamesParamsDto) returns (ListGamesDto) {}
+}
+
+message ApplyBidParamsDto {
+  string game_session_id = 1;
+  string user_id = 2;
+  optional string wallet_account_id = 3;
+  struct.v1.CurrencyAmountDto currency_amount = 4;
+}
+
+message BeginGameEventParamsDto {
+  string game_id = 1;
+  optional string name = 2;
+  optional string display_name = 3;
+  int32 simultaneous_sessions_count = 4;
+  string start_at = 5;
+  string finish_at = 6;
+}
+
+message EndGameEventParamsDto {
+  string id = 1;
+}
+
+message GameEventDto {
+  string id = 1;
+  string game_id = 2;
+  optional string name = 3;
+  optional string display_name = 4;
+  int32 simultaneous_sessions_count = 5;
+  string start_at = 6;
+  string finish_at = 7;
+  bool is_finished = 8;
+  string created_at = 9;
+  string updated_at = 10;
 }
 
 message GameDto {
@@ -15,12 +55,24 @@ message GameDto {
   string updated_at = 4;
 }
 
-message ListGamesParamsDto {
-  optional bool is_available = 1;
+message ListGameEventsDto {
+  // If items is empty, only total would be passed
+  repeated GameEventDto items = 1;
+  int32 total = 2;
+}
+
+message ListGameEventsParamsDto {
+  optional string game_id = 1;
+  optional bool is_finished = 2;
+  // TODO add filtering range
 }
 
 message ListGamesDto {
   // If items is empty, only total would be passed
   repeated GameDto items = 1;
   int32 total = 2;
+}
+
+message ListGamesParamsDto {
+  optional bool is_available = 1;
 }

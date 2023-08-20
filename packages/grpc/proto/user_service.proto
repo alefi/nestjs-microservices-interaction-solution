@@ -7,7 +7,7 @@ package user_service.v1;
 import "shared/struct.proto";
 
 service UserService {
-  rpc GetUserById(struct.v1.GetEntityById) returns (UserDto) {}
+  rpc GetUserById(struct.v1.GetEntityByIdParamsDto) returns (UserDto) {}
 }
 
 message UserDto {

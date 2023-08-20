@@ -4,11 +4,16 @@ syntax = "proto3";
 
 package struct.v1;
 
-message GetEntityById {
+message CurrencyAmountDto {
+  string currency = 1;
+  string amount = 2;
+}
+
+message GetEntityByIdParamsDto {
   string id = 1;
 }
 
-message OperationResult {
+message OperationResultDto {
   string id = 1;
   optional string status = 2;
 }

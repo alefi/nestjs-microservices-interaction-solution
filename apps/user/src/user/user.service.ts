@@ -7,7 +7,7 @@ import { PrismaService } from '@lib/db';
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUserById(getByIdParams: StructV1.GetEntityById) {
-    return await this.prismaService.user.findUnique({ where: getByIdParams });
+  async getUserById(getByIdParams: StructV1.GetEntityByIdParamsDto) {
+    return await this.prismaService.user.findUniqueOrThrow({ where: getByIdParams });
   }
 }
