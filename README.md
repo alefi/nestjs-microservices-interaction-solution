@@ -1,4 +1,4 @@
-# Sample Ethereum blockchain integration DAPP POC solution
+# Sample NestJS microservices integration POC solution
 
 ## Requirements
 
