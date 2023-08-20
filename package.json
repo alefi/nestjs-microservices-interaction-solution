@@ -16,6 +16,7 @@
     "clean": "turbo run clean --parallel"
   },
   "devDependencies": {
+    "@nestjs/cli": "10.1.12",
     "@turbo/gen": "^1.9.7",
     "dotenv-cli": "latest",
     "eslint": "^8.46.0",
