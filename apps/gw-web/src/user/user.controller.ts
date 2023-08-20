@@ -1,5 +1,5 @@
-import { Controller, Get, Headers, HttpStatus } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Headers } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { tempAuthHeader } from '@lib/utils';
 import { UserProfileDto } from './dto';
@@ -14,7 +14,6 @@ export class UserController {
    * @description Since this project doesn't have an authorisation at all, x-user-id should be provided by a client (of course, this approach is not ready for production).
    * TODO Make a JWT authorisation based auth service, and get rid of this approach.
    */
-  @ApiResponse({ status: HttpStatus.OK, type: UserProfileDto })
   @Get('profile/me')
   async me(@Headers(tempAuthHeader) userId: string): Promise<UserProfileDto> {
     const user = await this.userService.getUserById({ id: userId });

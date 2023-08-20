@@ -2,6 +2,11 @@
 
 export const protobufPackage = "struct.v1";
 
+export interface CurrencyAmount {
+  currency: string;
+  amount: string;
+}
+
 export interface GetEntityById {
   id: string;
 }

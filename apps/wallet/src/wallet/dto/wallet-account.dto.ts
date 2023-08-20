@@ -1,9 +1,11 @@
 import type { WalletAccount } from '@prisma/client';
 
-import { WalletServiceV1 } from '@lib/grpc';
-import { ICurrencyAmount, IAuthorisedCurrencyAmount } from '@lib/utils';
+import { StructV1, WalletServiceV1 } from '@lib/grpc';
+import { IAuthorisedCurrencyAmount } from '@lib/utils';
 
-export class WalletAccountDto implements WalletServiceV1.WalletAccountDto, ICurrencyAmount, IAuthorisedCurrencyAmount {
+export class WalletAccountDto
+  implements WalletServiceV1.WalletAccountDto, StructV1.CurrencyAmount, IAuthorisedCurrencyAmount
+{
   readonly id: string;
   readonly currency: string;
   readonly amount: string;

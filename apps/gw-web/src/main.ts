@@ -8,6 +8,12 @@ import { ConfigSchema } from './config';
 async function main() {
   const app = await NestFactory.create(AppModule);
 
+  /**
+   * Note: This API contains both public and internal endpoints.
+   * However, the current approach mustn't use on production.
+   * Frankly, internal endpoints acts as triggers. Each method covered under these endpoints
+   * should be called the other way (it might be an external orchestration, service, job, etc.)
+   */
   const openApiConfig = new DocumentBuilder()
     .setTitle('Sample game REST API')
     .setDescription('public endpoints')
