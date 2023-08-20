@@ -98,8 +98,12 @@ docker-compose up --detach
 It also needs to migrate database state. For a development purpose the database seeding also supported.
 
 ```console
-$ npm -w @lib/db run db:migrate
-# The following step is optional:
+npm -w @lib/db run db:migrate
+```
+
+The following step is optional (it will seed the database):
+
+```console
 npm -w @lib/db run db:seed
 ```
 
