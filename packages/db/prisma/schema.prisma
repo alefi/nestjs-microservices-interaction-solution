@@ -76,24 +76,50 @@ model User {
 model Game {
   id String @id @default(uuid()) @db.Uuid
 
-  name String
+  name                    String
+  simultaneousEventsCount Int    @default(1) @map("simultaneous_events_count")
 
   isAvailable Boolean @map("is_available")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
-  sessions GameSession[] @relation("GameSessionGame")
+  events GameEvent[] @relation("GameEventGame")
 
   @@map("games")
+  @@schema("gaming")
+}
+
+model GameEvent {
+  id String @id @default(uuid()) @db.Uuid
+
+  game   Game   @relation("GameEventGame", fields: [gameId], references: [id])
+  gameId String @map("game_id") @db.Uuid
+
+  simultaneousSessionsCount Int @default(1) @map("simultaneous_sessions_count")
+
+  // Here could be an additional game event details, like the following or others:
+  // interSessionsDelaySeconds Int? @map("inter_sessions_delay_seconds")
+
+  startAt  DateTime @map("start_at") @db.Timestamptz
+  finishAt DateTime @map("finish_at") @db.Timestamptz
+
+  isFinished Boolean @map("is_finished")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  sessions GameSession[] @relation("GameSessionGameEvent")
+
+  @@map("game_events")
   @@schema("gaming")
 }
 
 model GameSession {
   id String @id @default(uuid()) @db.Uuid
 
-  game   Game   @relation("GameSessionGame", fields: [gameId], references: [id])
-  gameId String @map("game_id") @db.Uuid
+  gameEvent   GameEvent @relation("GameSessionGameEvent", fields: [gameEventId], references: [id])
+  gameEventId String    @map("game_event_id") @db.Uuid
 
   // Here could be an additional game session details.
 
