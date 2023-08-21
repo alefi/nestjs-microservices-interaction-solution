@@ -1,42 +1,45 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { GameServiceV1 } from '@lib/grpc';
+import { ITimestampsMeta } from '@lib/utils';
 
 export class GameEventDto
-  implements Omit<GameServiceV1.GameEventDto, 'startAt' | 'finishAt' | 'createdAt' | 'updatedAt'>
+  implements
+    Omit<GameServiceV1.GameEventDto, 'startAt' | 'finishAt' | 'createdAt' | 'updatedAt'>,
+    ITimestampsMeta<Date>
 {
   @ApiProperty({
-    description: 'A game event unique identifier',
+    description: 'A game event unique identifier.',
     format: 'uuid',
   })
   readonly id: string;
 
   @ApiProperty({
-    description: 'A game unique identifier',
+    description: 'A game unique identifier.',
     format: 'uuid',
   })
   readonly gameId: string;
 
   /**
-   * Name of the game event
+   * Name of the game event.
    * @example 'Guess the number marathon'
    */
   readonly name?: string;
 
   /**
-   * Extended name of the game event
+   * Extended name of the game event.
    * @example 'Guess the number marathon that comprises 200 rounds in a row'
    */
   readonly displayName?: string;
 
   /**
-   * Default game event session duration in seconds
+   * Default game event session duration in seconds.
    * @default 120
    */
   readonly defaultSessionDurationSeconds: number;
 
   @ApiProperty({
-    description: 'Maximum count of the game event sessions running at the same moment',
+    description: 'Maximum count of the game event sessions running at the same moment.',
     maximum: 1000,
     minimum: 1,
     format: 'integer',
@@ -47,7 +50,7 @@ export class GameEventDto
   readonly finishAt: Date;
 
   @ApiProperty({
-    description: 'The cancellation reason if applied',
+    description: 'The cancellation reason if applied.',
     example: 'Cancelled due to abuse detected',
   })
   readonly cancellationReason?: string;

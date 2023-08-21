@@ -1,27 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { GameServiceV1 } from '@lib/grpc';
+import { ITimestampsMeta } from '@lib/utils';
 
-export class GameDto implements Omit<GameServiceV1.GameDto, 'createdAt' | 'updatedAt'> {
+export class GameDto implements Omit<GameServiceV1.GameDto, 'createdAt' | 'updatedAt'>, ITimestampsMeta<Date> {
   @ApiProperty({
-    description: 'A game unique identifier',
+    description: 'A game unique identifier.',
     format: 'uuid',
   })
   readonly id: string;
 
   /**
-   * Name of the game
+   * Name of the game.
    * @example 'Guess the number'
    */
   readonly name: string;
 
   /**
-   * Extended name of the game
+   * Extended name of the game.
    */
   readonly displayName?: string;
 
   @ApiProperty({
-    description: 'Maximum count of the game events running at the same moment',
+    description: 'Maximum count of the game events running at the same moment.',
     maximum: 100,
     minimum: 1,
     format: 'integer',
@@ -29,7 +30,7 @@ export class GameDto implements Omit<GameServiceV1.GameDto, 'createdAt' | 'updat
   readonly simultaneousEventsCount: number;
 
   /**
-   * If the property is false, the game isn't available to play
+   * If the property is false, the game isn't available to play.
    */
   readonly isAvailable: boolean;
 

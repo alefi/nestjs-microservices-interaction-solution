@@ -1,8 +1,9 @@
 import type { Game } from '@prisma/client';
 
 import { GameServiceV1 } from '@lib/grpc';
+import { ITimestampsMeta } from '@lib/utils';
 
-export class GameDto implements GameServiceV1.GameDto {
+export class GameDto implements GameServiceV1.GameDto, ITimestampsMeta<string> {
   readonly id: string;
   readonly name: string;
   readonly displayName?: string;

@@ -1,35 +1,49 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { OmitType } from '@nestjs/swagger';
 import { IsISO8601, IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 import { GameServiceV1 } from '@lib/grpc';
+import { GameEventDto } from './game-event.dto';
 
-export class BeginGameEventParamsDto implements GameServiceV1.BeginGameEventParamsDto {
-  @ApiProperty({
-    description: 'A user unique identifier',
-    format: 'uuid',
-  })
+export class BeginGameEventParamsDto
+  extends OmitType(GameEventDto, [
+    'id',
+    'startAt',
+    'finishAt',
+    'defaultSessionDurationSeconds',
+    'simultaneousSessionsCount',
+    'cancellationReason',
+    'isCancelled',
+    'isFinished',
+    'createdAt',
+    'updatedAt',
+  ])
+  implements GameServiceV1.BeginGameEventParamsDto
+{
   @Transform(({ value }) => String(value).toLocaleLowerCase())
   @IsUUID()
-  gameId: string;
+  declare readonly gameId: string;
 
   @IsOptional()
-  name?: string | undefined;
+  declare readonly name?: string;
 
   @IsOptional()
-  displayName?: string | undefined;
+  declare readonly displayName?: string;
 
-  /**
-   * Maximum count of the game event sessions running at the same moment
-   */
+  @IsOptional()
+  @Min(1)
+  @IsInt()
+  declare readonly defaultSessionDurationSeconds?: number;
+
+  @IsOptional()
   @Max(1000)
   @Min(1)
   @IsInt()
-  simultaneousSessionsCount: number;
+  declare readonly simultaneousSessionsCount?: number;
 
   @IsISO8601({ strict: true })
-  startAt: string;
+  declare readonly startAt: string;
 
   @IsISO8601({ strict: true })
-  finishAt: string;
+  declare readonly finishAt: string;
 }

@@ -5,13 +5,13 @@ import { GameEventDto } from './game-event.dto';
 
 @ApiExtraModels(GameEventDto)
 export class ListGameEventsDto extends ListResultDto<GameEventDto> {
-  declare items: GameEventDto[];
+  declare readonly items: GameEventDto[];
 
   /**
    * Total count of items
    * @example 1
    */
-  declare total: number;
+  declare readonly total: number;
 
   static create(items: ReadonlyArray<GameEventDto>, total: number): ListGameEventsDto {
     return Object.assign(new this(), {

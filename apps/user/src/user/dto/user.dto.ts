@@ -1,8 +1,9 @@
 import type { User } from '@prisma/client';
 
 import { UserServiceV1 } from '@lib/grpc';
+import { ITimestampsMeta } from '@lib/utils';
 
-export class UserDto implements UserServiceV1.UserDto {
+export class UserDto implements UserServiceV1.UserDto, ITimestampsMeta<string> {
   readonly id: string;
   readonly name: string;
 

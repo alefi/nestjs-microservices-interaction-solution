@@ -4,7 +4,7 @@ import { IsUUID } from 'class-validator';
 
 export class GetByIdParamsDto {
   @ApiProperty({
-    description: 'An entity unique identifier',
+    description: 'An entity unique identifier.',
     format: 'uuid',
   })
   @Transform(({ value }) => String(value).toLowerCase())

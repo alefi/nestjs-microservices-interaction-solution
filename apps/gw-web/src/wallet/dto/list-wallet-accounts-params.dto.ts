@@ -1,19 +1,25 @@
+import { PartialType, PickType } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsUUID } from 'class-validator';
-
-import { WalletServiceV1 } from '@lib/grpc';
 import { Transform } from 'class-transformer';
 
-export class ListWalletAccountsParamsDto implements WalletServiceV1.ListWalletAccountsParamsDto {
+import { WalletServiceV1 } from '@lib/grpc';
+import { WalletAccountDto } from './wallet-account.dto';
+
+export class ListWalletAccountsParamsDto
+  extends PartialType(PickType(WalletAccountDto, ['isAvailable', 'userId']))
+  implements WalletServiceV1.ListWalletAccountsParamsDto
+{
   /**
    * Filter only available wallet accounts
    */
   @Transform(({ value }) => value === 'true')
   @IsOptional()
   @IsBoolean()
-  readonly isAvailable?: boolean;
+  declare readonly isAvailable?: boolean;
 
   @Transform(({ value }) => String(value).toLocaleLowerCase())
-  @IsOptional() // TODO Remove this line after an authorisation appears
+  // TODO Remove a following line after an authorisation appears, remove `?` character below, and `userId` from type definition above
+  @IsOptional()
   @IsUUID()
-  readonly userId: string;
+  declare readonly userId: string;
 }
