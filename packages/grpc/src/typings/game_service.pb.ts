@@ -24,6 +24,7 @@ export interface BeginGameEventParamsDto {
 
 export interface EndGameEventParamsDto {
   id: string;
+  cancellationReason?: string | undefined;
 }
 
 export interface GameEventDto {

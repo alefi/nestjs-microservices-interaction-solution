@@ -33,6 +33,7 @@ message BeginGameEventParamsDto {
 
 message EndGameEventParamsDto {
   string id = 1;
+  optional string cancellation_reason = 2;
 }
 
 message GameEventDto {
