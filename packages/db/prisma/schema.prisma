@@ -96,12 +96,14 @@ model GameEvent {
   game   Game   @relation("GameEventGame", fields: [gameId], references: [id])
   gameId String @map("game_id") @db.Uuid
 
-  name                      String?
-  displayName               String? @map("display_name")
-  simultaneousSessionsCount Int     @default(1) @map("simultaneous_sessions_count")
+  name        String?
+  displayName String? @map("display_name")
 
-  // Here could be an additional game event details, like the following or others:
+  // Here could be an additional game event details, like the following.
+  // Also, a friendly approach is to create options JsonB field and move everything regarding to options into there.
   // interSessionsDelaySeconds Int? @map("inter_sessions_delay_seconds")
+  defaultSessionDurationSeconds Int @default(120) @map("default_session_duration_seconds")
+  simultaneousSessionsCount     Int @default(1) @map("simultaneous_sessions_count")
 
   startAt  DateTime @map("start_at") @db.Timestamptz
   finishAt DateTime @map("finish_at") @db.Timestamptz
@@ -169,6 +171,7 @@ model WalletEntry {
 
   reference String
 
+  // Amount could be positive or negative
   amount   Decimal
   currency Currency
   status   Status
