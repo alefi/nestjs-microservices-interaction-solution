@@ -10,6 +10,8 @@ export class GameEventDto implements GameServiceV1.GameEventDto {
   readonly simultaneousSessionsCount: number;
   readonly startAt: string;
   readonly finishAt: string;
+  readonly cancellationReason?: string;
+  readonly isCancelled: boolean;
   readonly isFinished: boolean;
   readonly createdAt: string;
   readonly updatedAt: string;
