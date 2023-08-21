@@ -15,6 +15,24 @@ export class GameDto implements Omit<GameServiceV1.GameDto, 'createdAt' | 'updat
    */
   readonly name: string;
 
+  /**
+   * Extended name of the game
+   */
+  readonly displayName?: string;
+
+  @ApiProperty({
+    description: 'Maximum count of the game events running at the same moment',
+    maximum: 100,
+    minimum: 1,
+    format: 'integer',
+  })
+  readonly simultaneousEventsCount: number;
+
+  /**
+   * If the property is false, the game isn't available to play
+   */
+  readonly isAvailable: boolean;
+
   readonly createdAt: Date;
   readonly updatedAt: Date;
 

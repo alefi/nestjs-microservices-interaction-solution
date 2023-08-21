@@ -76,8 +76,10 @@ model User {
 model Game {
   id String @id @default(uuid()) @db.Uuid
 
-  name                    String
-  simultaneousEventsCount Int    @default(1) @map("simultaneous_events_count")
+  name        String
+  displayName String? @map("display_name")
+
+  simultaneousEventsCount Int @default(1) @map("simultaneous_events_count")
 
   isAvailable Boolean @map("is_available")
 

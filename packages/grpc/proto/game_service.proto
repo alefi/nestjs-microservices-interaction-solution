@@ -56,8 +56,11 @@ message GameEventDto {
 message GameDto {
   string id = 1;
   string name = 2;
-  string created_at = 3;
-  string updated_at = 4;
+  optional string display_name = 3;
+  int32 simultaneous_events_count = 4;
+  bool is_available = 5;
+  string created_at = 6;
+  string updated_at = 7;
 }
 
 message ListGameEventsDto {

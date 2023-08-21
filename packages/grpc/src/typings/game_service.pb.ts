@@ -47,6 +47,9 @@ export interface GameEventDto {
 export interface GameDto {
   id: string;
   name: string;
+  displayName?: string | undefined;
+  simultaneousEventsCount: number;
+  isAvailable: boolean;
   createdAt: string;
   updatedAt: string;
 }

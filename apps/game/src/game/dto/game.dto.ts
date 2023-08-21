@@ -5,6 +5,9 @@ import { GameServiceV1 } from '@lib/grpc';
 export class GameDto implements GameServiceV1.GameDto {
   readonly id: string;
   readonly name: string;
+  readonly displayName?: string;
+  readonly simultaneousEventsCount: number;
+  readonly isAvailable: boolean;
   readonly createdAt: string;
   readonly updatedAt: string;
 
