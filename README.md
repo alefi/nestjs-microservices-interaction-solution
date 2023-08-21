@@ -51,9 +51,9 @@ This code is provided as a PoC and it could be improved. For instance:
 
 ## Techniques
 
-This chapter contains minor notice regarding to approaches, and could be skipped.
+This chapter contains minor notice regarding to approaches.
 
-### gRPP
+### gRPС
 
 The microservices interact with each other using a direct gRpc call as a primary transport layer. However, there is an additional interaction method based on the BullMQ queues. As you can notice, there is a lot of code related to gRpc. But don't be afraid, most of that code is auto-generated, since the code in the repository is based on the code-first approach. [How to build types from protobuf files?](./packages/grpc/README.md)
 
