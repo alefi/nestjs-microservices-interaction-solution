@@ -3,7 +3,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { GameServiceClientService, type GameServiceV1 } from '@lib/grpc';
 import { GetByIdParamsDto } from '@lib/utils';
-import { BeginGameEventParamsDto, ListGameEventsParamsDto, ListGamesParamsDto } from './dto';
+import { BeginGameEventParamsDto, EndGameEventParamsDto, ListGameEventsParamsDto, ListGamesParamsDto } from './dto';
 
 @Injectable()
 export class GameService {
@@ -14,6 +14,11 @@ export class GameService {
   async beginGameEvent(beginGameEventParams: BeginGameEventParamsDto): Promise<GameServiceV1.GameEventDto> {
     this.logger.debug('Sending request with payload:', JSON.stringify(beginGameEventParams));
     return await firstValueFrom(this.gameServiceClientService.beginGameEvent(beginGameEventParams));
+  }
+
+  async endGameEvent(endGameEventParams: EndGameEventParamsDto): Promise<GameServiceV1.GameEventDto> {
+    this.logger.debug('Sending request with payload:', JSON.stringify(endGameEventParams));
+    return await firstValueFrom(this.gameServiceClientService.endGameEvent(endGameEventParams));
   }
 
   async getGameEventById(getByIdParams: GetByIdParamsDto): Promise<GameServiceV1.GameEventDto> {

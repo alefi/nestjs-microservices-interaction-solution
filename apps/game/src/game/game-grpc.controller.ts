@@ -15,6 +15,12 @@ export class GameGrpcController {
   }
 
   @GrpcMethod('GameService')
+  async endGameEvent(endGameEventParams: GameServiceV1.EndGameEventParamsDto): Promise<GameEventDto> {
+    const gameEvent = await this.gameService.endGameEvent(endGameEventParams);
+    return GameEventDto.fromModel(gameEvent);
+  }
+
+  @GrpcMethod('GameService')
   async getGameEventById(getEntityByIdParams: StructV1.GetEntityByIdParamsDto): Promise<GameEventDto> {
     const gameEvent = await this.gameService.getGameEventById(getEntityByIdParams);
     return GameEventDto.fromModel(gameEvent);

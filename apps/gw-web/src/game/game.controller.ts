@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import {
   BeginGameEventParamsDto,
+  EndGameEventParamsDto,
   GameDto,
   GameEventDto,
   ListGameEventsDto,
@@ -25,6 +26,16 @@ export class GameController {
   @Post('event')
   async beginGameEvent(@Body() beginGameEventParams: BeginGameEventParamsDto): Promise<GameEventDto> {
     const gameEvent = await this.gameService.beginGameEvent(beginGameEventParams);
+    return GameEventDto.create(gameEvent);
+  }
+
+  @ApiOperation({
+    description: "It cancels a game event and informs it mustn't generate new game sessions.",
+    summary: 'Cancel a game event',
+  })
+  @Delete('event')
+  async endGameEvent(@Body() endGameEventParams: EndGameEventParamsDto): Promise<GameEventDto> {
+    const gameEvent = await this.gameService.endGameEvent(endGameEventParams);
     return GameEventDto.create(gameEvent);
   }
 

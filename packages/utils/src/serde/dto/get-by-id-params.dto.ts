@@ -9,5 +9,5 @@ export class GetByIdParamsDto {
   })
   @Transform(({ value }) => String(value).toLowerCase())
   @IsUUID()
-  id: string;
+  readonly id: string;
 }

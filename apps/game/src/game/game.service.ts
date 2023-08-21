@@ -24,6 +24,24 @@ export class GameService {
     return gameEvent;
   }
 
+  async endGameEvent(endGameEventParams: GameServiceV1.EndGameEventParamsDto): Promise<GameEvent> {
+    const gameEvent = await this.prismaService.gameEvent.update({
+      data: {
+        ...endGameEventParams,
+        isCancelled: true,
+        isFinished: true,
+      },
+      where: {
+        id: endGameEventParams.id,
+        isFinished: false,
+      },
+    });
+
+    // TODO Emit a domain message here. Probably, create an interactive transaction and do emit from there.
+
+    return gameEvent;
+  }
+
   async getGameEventById(getEntityByIdParams: StructV1.GetEntityByIdParamsDto): Promise<GameEvent> {
     return await this.prismaService.gameEvent.findUniqueOrThrow({ where: getEntityByIdParams });
   }
