@@ -49,6 +49,20 @@ This code is provided as a PoC and it could be improved. For instance:
 - get rid of DRY principle violation in several places on codebase
 - use [Temporal](https://temporal.io) for a process orchestration
 
+## Techniques
+
+This chapter contains minor notice regarding to approaches, and could be skipped.
+
+### gRPP
+
+The microservices interact with each other using a direct gRpc call as a primary transport layer. However, there is an additional interaction method based on the BullMQ queues. As you can notice, there is a lot of code related to gRpc. But don't be afraid, most of that code is auto-generated, since the code in the repository is based on the code-first approach. [How to build types from protobuf files?](./packages/grpc/README.md)
+
+### Open API
+
+The Open API document is available by relative path `<HOST:WEB_GATEWAY_SERVICE_HTTP_PORT>/docs` (e.g. `localhost:3000/docs`).
+
+TODO Append the Postman document for be able testing locally.
+
 ## Usage
 
 Please read this section carefully.
@@ -121,12 +135,6 @@ or, to precisely run only the client application, run the following command:
 ```console
 npm -w gw-web run dev
 ```
-
-### Open API
-
-The Open API document is available by relative path `<HOST:WEB_GATEWAY_SERVICE_HTTP_PORT>/docs` (e.g. `localhost:3000/docs`).
-
-TODO Append the Postman document for be able testing locally.
 
 ### Add or update dependencies
 
