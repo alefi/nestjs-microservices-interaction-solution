@@ -40,6 +40,13 @@ export class GameEventDto
   readonly startAt: Date;
   readonly finishAt: Date;
 
+  @ApiProperty({
+    description: 'The cancellation reason if applied',
+    example: 'Cancelled due to abuse detected',
+  })
+  readonly cancellationReason?: string;
+
+  readonly isCancelled: boolean;
   readonly isFinished: boolean;
 
   readonly createdAt: Date;
