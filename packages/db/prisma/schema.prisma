@@ -108,7 +108,10 @@ model GameEvent {
   startAt  DateTime @map("start_at") @db.Timestamptz
   finishAt DateTime @map("finish_at") @db.Timestamptz
 
-  isFinished Boolean @map("is_finished")
+  cancellationReason String? @map("cancellation_reason")
+
+  isCancelled Boolean @default(false) @map("is_cancelled")
+  isFinished  Boolean @map("is_finished")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
