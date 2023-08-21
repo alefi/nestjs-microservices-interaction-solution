@@ -41,10 +41,11 @@ message ReleaseFundsParamsDto {
 
 message WalletAccountDto {
   string id = 1;
-  string currency = 2;
-  string amount = 3;
-  string authorised_amount = 4;
-  bool is_available = 5;
-  string created_at = 6;
-  string updated_at = 7;
+  string user_id = 2;
+  string currency = 3;
+  string amount = 4; // calculated
+  string authorised_amount = 5; // calculated
+  bool is_available = 6;
+  string created_at = 7;
+  string updated_at = 8;
 }

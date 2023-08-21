@@ -34,8 +34,11 @@ export interface ReleaseFundsParamsDto {
 
 export interface WalletAccountDto {
   id: string;
+  userId: string;
   currency: string;
+  /** calculated */
   amount: string;
+  /** calculated */
   authorisedAmount: string;
   isAvailable: boolean;
   createdAt: string;

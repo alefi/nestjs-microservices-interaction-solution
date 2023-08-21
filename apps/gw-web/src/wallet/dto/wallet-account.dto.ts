@@ -1,16 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { WalletServiceV1 } from '@lib/grpc';
+import { ITimestampsMeta } from '@lib/utils';
 
-export class WalletAccountDto implements Omit<WalletServiceV1.WalletAccountDto, 'createdAt' | 'updatedAt'> {
+export class WalletAccountDto
+  implements Omit<WalletServiceV1.WalletAccountDto, 'createdAt' | 'updatedAt'>, ITimestampsMeta<Date>
+{
   @ApiProperty({
-    description: 'A wallet unique identifier',
+    description: 'A wallet unique identifier.',
     format: 'uuid',
   })
   readonly id: string;
 
   @ApiProperty({
-    description: 'Currency code',
+    description: 'A user unique identifier.',
+    format: 'uuid',
+  })
+  readonly userId: string;
+
+  @ApiProperty({
+    description: 'Currency code.',
     example: 'USD',
   })
   readonly currency: string;
