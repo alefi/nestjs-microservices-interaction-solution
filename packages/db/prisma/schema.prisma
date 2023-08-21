@@ -154,7 +154,7 @@ model WalletAccount {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
-  WalletEntry WalletEntry[] @relation("WalletEntryWallet")
+  walletEntries WalletEntry[] @relation("WalletEntryWallet")
 
   @@unique([userId, currency])
   @@map("wallet_accounts")
