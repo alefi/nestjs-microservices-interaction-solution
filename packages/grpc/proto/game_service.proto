@@ -44,9 +44,11 @@ message GameEventDto {
   int32 simultaneous_sessions_count = 5;
   string start_at = 6;
   string finish_at = 7;
-  bool is_finished = 8;
-  string created_at = 9;
-  string updated_at = 10;
+  optional string cancellation_reason = 8;
+  bool is_cancelled = 9;
+  bool is_finished = 10;
+  string created_at = 11;
+  string updated_at = 12;
 }
 
 message GameDto {

@@ -35,6 +35,8 @@ export interface GameEventDto {
   simultaneousSessionsCount: number;
   startAt: string;
   finishAt: string;
+  cancellationReason?: string | undefined;
+  isCancelled: boolean;
   isFinished: boolean;
   createdAt: string;
   updatedAt: string;
