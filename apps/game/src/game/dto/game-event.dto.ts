@@ -7,6 +7,7 @@ export class GameEventDto implements GameServiceV1.GameEventDto {
   readonly gameId: string;
   readonly name?: string;
   readonly displayName?: string;
+  readonly defaultSessionDurationSeconds: number;
   readonly simultaneousSessionsCount: number;
   readonly startAt: string;
   readonly finishAt: string;

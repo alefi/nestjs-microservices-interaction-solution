@@ -29,6 +29,12 @@ export class GameEventDto
    */
   readonly displayName?: string;
 
+  /**
+   * Default game event session duration in seconds
+   * @default 120
+   */
+  readonly defaultSessionDurationSeconds: number;
+
   @ApiProperty({
     description: 'Maximum count of the game event sessions running at the same moment',
     maximum: 1000,
@@ -46,6 +52,9 @@ export class GameEventDto
   })
   readonly cancellationReason?: string;
 
+  /**
+   * If the property is true, the game event got aborted.
+   */
   readonly isCancelled: boolean;
   readonly isFinished: boolean;
 
