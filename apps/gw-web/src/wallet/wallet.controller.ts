@@ -1,5 +1,5 @@
 import { Controller, Get, Headers, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { tempAuthHeader } from '@lib/utils';
 import { WalletService } from './wallet.service';
@@ -11,9 +11,14 @@ export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
   /**
-   * @description Since this project doesn't have an authorisation at all, x-user-id should be provided by a client (of course, this approach is not ready for production).
+   * @description Since this project doesn't have an authorisation at all, x-user-id header should be provided by a client (of course, this approach is not ready for production).
    * TODO Make a JWT authorisation based auth service, and get rid of this approach.
    */
+  @ApiOperation({
+    description:
+      "Since this project doesn't have an authorisation at all, x-user-id header should be provided by a client (of course, this approach is not ready for production).",
+    summary: 'Retrieve registered wallet accounts belonging to the current user',
+  })
   @Get()
   async listWallets(
     @Headers(tempAuthHeader) userId: string,

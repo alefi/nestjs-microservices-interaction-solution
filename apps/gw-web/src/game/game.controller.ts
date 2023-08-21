@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import {
   BeginGameEventParamsDto,
@@ -18,18 +18,24 @@ import { GetByIdParamsDto } from '@lib/utils';
 export class GameController {
   constructor(private readonly gameService: GameService) {}
 
+  @ApiOperation({
+    description: 'In turn it will spawn sessions according to the settings.',
+    summary: 'Trigger a game event',
+  })
   @Post('event')
   async beginGameEvent(@Body() beginGameEventParams: BeginGameEventParamsDto): Promise<GameEventDto> {
     const gameEvent = await this.gameService.beginGameEvent(beginGameEventParams);
     return GameEventDto.create(gameEvent);
   }
 
+  @ApiOperation({ summary: 'Retrieve the game event by id' })
   @Get('event/:id')
   async getGameEventById(@Param() getByIdParams: GetByIdParamsDto): Promise<GameEventDto> {
     const gameEvent = await this.gameService.getGameEventById(getByIdParams);
     return GameEventDto.create(gameEvent);
   }
 
+  @ApiOperation({ summary: 'Retrieve a game event list' })
   @Get('event')
   async listGameEvents(@Query() listGameEventsParams: ListGameEventsParamsDto): Promise<ListGameEventsDto> {
     const gameEventList = await this.gameService.listGameEvents(listGameEventsParams);
@@ -37,6 +43,7 @@ export class GameController {
     return ListGameEventsDto.create(items, gameEventList.total);
   }
 
+  @ApiOperation({ summary: 'Retrieve a game list' })
   @Get()
   async listGames(@Query() listGamesParams: ListGamesParamsDto): Promise<ListGamesDto> {
     const gameList = await this.gameService.listGames(listGamesParams);
