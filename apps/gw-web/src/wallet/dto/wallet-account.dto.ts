@@ -9,9 +9,22 @@ export class WalletAccountDto implements Omit<WalletServiceV1.WalletAccountDto, 
   })
   readonly id: string;
 
+  @ApiProperty({
+    description: 'Currency code',
+    example: 'USD',
+  })
   readonly currency: string;
   readonly amount: string;
+
+  @ApiProperty({
+    description: 'The authorised (aka locked) money amount, which is not available for payments.',
+    example: 'USD',
+  })
   readonly authorisedAmount: string;
+
+  /**
+   * If false, the wallet account is unavailable for any operations.
+   */
   readonly isAvailable: boolean;
 
   readonly createdAt: Date;
