@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { StructV1 } from '@lib/grpc';
+import { type StructV1 } from '@lib/grpc';
 import { PrismaService } from '@lib/db';
 
 @Injectable()

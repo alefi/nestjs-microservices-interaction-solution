@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { GameServiceV1 } from '@lib/grpc';
-import { ITimestampsMeta } from '@lib/utils';
+import { type GameServiceV1 } from '@lib/grpc';
+import { type ITimestampsMeta } from '@lib/utils';
 
 export class GameEventDto
   implements
@@ -37,6 +37,12 @@ export class GameEventDto
    * @default 120
    */
   readonly defaultSessionDurationSeconds: number;
+
+  @ApiProperty({
+    description: 'Games event sessions limit. It would generate no more sessions if the parameter reached.',
+    format: 'integer',
+  })
+  readonly sessionsCountLimit?: number;
 
   @ApiProperty({
     description: 'Maximum count of the game event sessions running at the same moment.',

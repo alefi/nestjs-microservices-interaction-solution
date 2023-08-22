@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { GetByIdParamsDto } from '@lib/utils';
 import {
   BeginGameEventParamsDto,
   EndGameEventParamsDto,
@@ -13,7 +14,6 @@ import {
   ListGamesParamsDto,
 } from './dto';
 import { GameService } from './game.service';
-import { GetByIdParamsDto } from '@lib/utils';
 
 @ApiTags('games')
 @Controller('/v1/game')

@@ -2,7 +2,7 @@ import { PartialType, PickType } from '@nestjs/swagger';
 import { IsBoolean, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-import { GameServiceV1 } from '@lib/grpc';
+import { type GameServiceV1 } from '@lib/grpc';
 import { GameDto } from './game.dto';
 
 export class ListGamesParamsDto

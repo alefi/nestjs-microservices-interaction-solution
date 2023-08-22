@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { GameServiceV1 } from '@lib/grpc';
-import { ITimestampsMeta } from '@lib/utils';
+import { type GameServiceV1 } from '@lib/grpc';
+import { type ITimestampsMeta } from '@lib/utils';
 
 export class GameDto implements Omit<GameServiceV1.GameDto, 'createdAt' | 'updatedAt'>, ITimestampsMeta<Date> {
   @ApiProperty({

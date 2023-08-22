@@ -2,7 +2,7 @@ import { PartialType, PickType } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsUUID } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-import { WalletServiceV1 } from '@lib/grpc';
+import { type WalletServiceV1 } from '@lib/grpc';
 import { WalletAccountDto } from './wallet-account.dto';
 
 export class ListWalletAccountsParamsDto

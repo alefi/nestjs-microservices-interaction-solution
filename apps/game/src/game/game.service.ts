@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Game, GameEvent, Prisma } from '@prisma/client';
 
 import { PrismaService } from '@lib/db';
-import { GameServiceV1 } from '@lib/grpc';
+import { type GameServiceV1 } from '@lib/grpc';
 
 @Injectable()
 export class GameService {

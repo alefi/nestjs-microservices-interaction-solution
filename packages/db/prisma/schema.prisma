@@ -104,8 +104,9 @@ model GameEvent {
   // Here could be an additional game event details, like the following.
   // Also, a friendly approach is to create options JsonB field and move everything regarding to options into there.
   // interSessionsDelaySeconds Int? @map("inter_sessions_delay_seconds")
-  defaultSessionDurationSeconds Int @default(120) @map("default_session_duration_seconds")
-  simultaneousSessionsCount     Int @default(1) @map("simultaneous_sessions_count")
+  defaultSessionDurationSeconds Int  @default(120) @map("default_session_duration_seconds")
+  sessionsCountLimit            Int? @map("sessions_count_limit")
+  simultaneousSessionsCount     Int  @default(1) @map("simultaneous_sessions_count")
 
   startAt  DateTime @map("start_at") @db.Timestamptz
   finishAt DateTime @map("finish_at") @db.Timestamptz
@@ -136,6 +137,7 @@ model GameSession {
   finishAt DateTime @map("finish_at") @db.Timestamptz
 
   isFinished Boolean @map("is_finished")
+  wonHash    String? @map("won_hash")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz

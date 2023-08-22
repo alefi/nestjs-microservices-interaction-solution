@@ -1,7 +1,7 @@
 import { OmitType } from '@nestjs/swagger';
 import { IsISO8601, IsInt, IsOptional, Max, Min } from 'class-validator';
 
-import { GameServiceV1 } from '@lib/grpc';
+import { type GameServiceV1 } from '@lib/grpc';
 import { GameEventDto } from './game-event.dto';
 
 export class BeginGameEventParamsDto
@@ -30,6 +30,10 @@ export class BeginGameEventParamsDto
   @Min(1)
   @IsInt()
   declare readonly defaultSessionDurationSeconds?: number;
+
+  @IsOptional()
+  @IsInt()
+  declare readonly sessionsCountLimit?: number;
 
   @IsOptional()
   @Max(1000)

@@ -18,6 +18,7 @@ export interface BeginGameEventParamsDto {
   name?: string | undefined;
   displayName?: string | undefined;
   defaultSessionDurationSeconds?: number | undefined;
+  sessionsCountLimit?: number | undefined;
   simultaneousSessionsCount?: number | undefined;
   startAt: string;
   finishAt: string;
@@ -35,6 +36,7 @@ export interface GameEventDto {
   name?: string | undefined;
   displayName?: string | undefined;
   defaultSessionDurationSeconds: number;
+  sessionsCountLimit?: number | undefined;
   simultaneousSessionsCount: number;
   startAt: string;
   finishAt: string;

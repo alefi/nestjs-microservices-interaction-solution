@@ -1,8 +1,8 @@
 import { IntersectionType, PickType } from '@nestjs/swagger';
 
-import { GameEventDto } from '../game-event.dto';
+import { type GameServiceV1 } from '@lib/grpc';
 import { GetByIdParamsDto } from '@lib/utils';
-import { GameServiceV1 } from '@lib/grpc';
+import { GameEventDto } from '../game-event.dto';
 
 export class GetGameEventParamsDto
   extends IntersectionType(GetByIdParamsDto, PickType(GameEventDto, ['gameId']))

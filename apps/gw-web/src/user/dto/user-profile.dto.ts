@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { UserServiceV1 } from '@lib/grpc';
-import { ITimestampsMeta } from '@lib/utils';
+import { type UserServiceV1 } from '@lib/grpc';
+import { type ITimestampsMeta } from '@lib/utils';
 
 export class UserProfileDto implements Omit<UserServiceV1.UserDto, 'createdAt' | 'updatedAt'>, ITimestampsMeta<Date> {
   @ApiProperty({

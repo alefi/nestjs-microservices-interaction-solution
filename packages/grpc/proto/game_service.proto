@@ -26,10 +26,11 @@ message BeginGameEventParamsDto {
   string game_id = 1;
   optional string name = 2;
   optional string display_name = 3;
-  optional int32 defaultSessionDurationSeconds = 4;
-  optional int32 simultaneous_sessions_count = 5;
-  string start_at = 6;
-  string finish_at = 7;
+  optional int32 default_session_duration_seconds = 4;
+  optional int32 sessions_count_limit = 5;
+  optional int32 simultaneous_sessions_count = 6;
+  string start_at = 7;
+  string finish_at = 8;
 }
 
 message EndGameEventParamsDto {
@@ -43,15 +44,16 @@ message GameEventDto {
   string game_id = 2;
   optional string name = 3;
   optional string display_name = 4;
-  int32 defaultSessionDurationSeconds = 5;
-  int32 simultaneous_sessions_count = 6;
-  string start_at = 7;
-  string finish_at = 8;
-  optional string cancellation_reason = 9;
-  bool is_cancelled = 10;
-  bool is_finished = 11;
-  string created_at = 12;
-  string updated_at = 13;
+  int32 default_session_duration_seconds = 5;
+  optional int32 sessions_count_limit = 6;
+  int32 simultaneous_sessions_count = 7;
+  string start_at = 8;
+  string finish_at = 9;
+  optional string cancellation_reason = 10;
+  bool is_cancelled = 11;
+  bool is_finished = 12;
+  string created_at = 13;
+  string updated_at = 14;
 }
 
 message GameDto {

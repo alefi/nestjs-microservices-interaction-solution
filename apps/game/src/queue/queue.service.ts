@@ -9,11 +9,11 @@ export class QueueService {
 
   constructor(@InjectQueue(QueueName.GameSessions) private gameSessionsQueue: Queue) {}
 
-  async publish(name: JobName, data: unknown, options: JobsOptions) {
+  async publish(name: JobName, data: unknown, options?: JobsOptions) {
     this.logger.debug(
-      `Received data ${JSON.stringify(data)} along with options ${JSON.stringify(options)} to publish into ${
-        QueueName.GameSessions
-      }`,
+      `Received job ${name} along both with data ${JSON.stringify(data)} and options ${JSON.stringify(
+        options,
+      )} to publish`,
     );
 
     return await this.gameSessionsQueue.add(name, data, options);
