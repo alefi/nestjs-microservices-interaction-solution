@@ -11,11 +11,13 @@
     "build": "nest build",
     "lint": "eslint \"{src,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "dotenv -e ../../.env.test -- jest --runInBand",
     "clean": "rm -rf .turbo dist node_modules"
   },
   "dependencies": {
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
+    "luxon": "3.4.0",
     "ts-pattern": "5.0.5",
     "zod": "3.22.1"
   },
@@ -26,5 +28,8 @@
     "@nestjs/microservices": "10.2.0",
     "@nestjs/schematics": "10.0.2",
     "@nestjs/swagger": "7.1.8"
+  },
+  "devDependencies": {
+    "@types/luxon": "3.3.1"
   }
 }
