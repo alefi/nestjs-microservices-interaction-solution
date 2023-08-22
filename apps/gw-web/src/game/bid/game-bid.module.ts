@@ -3,13 +3,13 @@ import { ClientsModule } from '@nestjs/microservices';
 
 import { GameServiceClientService } from '@lib/grpc';
 import { gameServiceGrpcClientOptions } from '../../config';
-import { GameEventController } from './game-event.controller';
-import { GameEventService } from './game-event.service';
+import { GameBidController } from './game-bid.controller';
+import { GameBidService } from './game-bid.service';
 
 @Module({
   // TODO Create a dynamic module somewhere else to avoid multi-registering.
   imports: [ClientsModule.register([gameServiceGrpcClientOptions])],
-  providers: [GameServiceClientService, GameEventService],
-  controllers: [GameEventController],
+  providers: [GameServiceClientService, GameBidService],
+  controllers: [GameBidController],
 })
-export class GameEventModule {}
+export class GameBidModule {}
