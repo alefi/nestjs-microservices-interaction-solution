@@ -35,8 +35,10 @@ export class GameBidDto
   readonly updatedAt: Date;
 
   static create(bid: GameServiceV1.GameBidDto): GameBidDto {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { valueHash, ...rest } = bid;
+    const {
+      valueHash, // eslint-disable-line @typescript-eslint/no-unused-vars
+      ...rest
+    } = bid;
     const objectPath: GameBidDto = {
       ...rest,
       createdAt: new Date(bid.createdAt),

@@ -6,11 +6,11 @@ import { gameServiceGrpcClientOptions } from '../config';
 import { GameEventModule } from './event';
 import { GameController } from './game.controller';
 import { GameService } from './game.service';
-import { GameBidModule } from './bid';
+import { GameSessionModule } from './session';
 
 @Module({
   // TODO Create a dynamic module somewhere else to avoid multi-registering.
-  imports: [ClientsModule.register([gameServiceGrpcClientOptions]), GameBidModule, GameEventModule],
+  imports: [ClientsModule.register([gameServiceGrpcClientOptions]), GameEventModule, GameSessionModule],
   providers: [GameServiceClientService, GameService],
   controllers: [GameController],
 })

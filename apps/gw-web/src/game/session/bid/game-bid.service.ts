@@ -5,7 +5,7 @@ import { GameServiceClientService, type GameServiceV1 } from '@lib/grpc';
 
 @Injectable()
 export class GameBidService {
-  private readonly logger = new Logger('GameBidService', { timestamp: true });
+  private readonly logger = new Logger(GameBidService.name, { timestamp: true });
 
   constructor(private readonly gameServiceClientService: GameServiceClientService) {}
 

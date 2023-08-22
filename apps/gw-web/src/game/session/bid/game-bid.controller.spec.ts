@@ -2,7 +2,7 @@ import { ClientsModule } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { GameServiceClientService } from '@lib/grpc';
-import { gameServiceGrpcClientOptions } from '../../config';
+import { gameServiceGrpcClientOptions } from '../../../config';
 import { GameBidController } from './game-bid.controller';
 import { GameBidService } from './game-bid.service';
 

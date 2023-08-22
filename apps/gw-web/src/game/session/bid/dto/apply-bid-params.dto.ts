@@ -7,10 +7,9 @@ import { CurrencyAmountDto } from './shared';
 @ApiExtraModels(CurrencyAmountDto)
 export class ApplyBidParamsDto
   extends OmitType(GameBidDto, ['id', 'status', 'createdAt', 'updatedAt'])
-  implements GameServiceV1.ApplyBidParamsDto
+  implements Omit<GameServiceV1.ApplyBidParamsDto, 'userId'>
 {
   declare readonly gameSessionId: string;
-  declare readonly userId: string;
   declare readonly value: string;
   declare readonly currencyAmount: CurrencyAmountDto;
   declare readonly walletAccountId?: string;
