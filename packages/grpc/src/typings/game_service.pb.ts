@@ -36,7 +36,7 @@ export interface GameBidDto {
   id: string;
   gameSessionId: string;
   walletEntryId: string;
-  /** Don't return this to a client. */
+  /** Don't expose this to a client. */
   valueHash: string;
   status: string;
   createdAt: string;

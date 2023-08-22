@@ -46,7 +46,7 @@ message GameBidDto {
   string id = 1;
   string game_session_id = 2;
   string wallet_entry_id = 3;
-  string value_hash = 4; // Don't return this to a client.
+  string value_hash = 4; // Don't expose this to a client.
   string status = 5;
   string created_at = 6;
   string updated_at = 7;
