@@ -20,7 +20,7 @@
     "prebuild": "npm run build:prisma",
     "build": "nest build",
     "lint": "eslint \"{src,test}/**/*.ts\"",
-    "lint-and-fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix && npm run format:prisma",
     "clean": "rm -rf .turbo dist node_modules"
   },
   "devDependencies": {

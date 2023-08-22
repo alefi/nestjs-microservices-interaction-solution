@@ -13,7 +13,7 @@
     "build": "nest build",
     "format:protobuf": "buf format --write proto",
     "lint": "eslint \"{src,test}/**/*.ts\"",
-    "lint-and-fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix && npm run format:protobuf",
     "clean": "rm -rf .turbo dist node_modules"
   },
   "dependencies": {

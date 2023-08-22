@@ -10,7 +10,7 @@
   "scripts": {
     "build": "nest build",
     "lint": "eslint \"{src,test}/**/*.ts\"",
-    "lint-and-fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "clean": "rm -rf .turbo dist node_modules"
   },
   "dependencies": {

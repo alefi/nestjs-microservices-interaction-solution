@@ -12,6 +12,7 @@
     "dev": "turbo run dev",
     "test": "turbo run test",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,md}\"",
     "clean": "turbo run clean --parallel"
   },

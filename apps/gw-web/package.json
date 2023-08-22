@@ -8,6 +8,7 @@
     "start:debug": "dotenv -e ../../.env.dev -- nest start --debug --watch",
     "dev": "npm run start:dev",
     "lint": "eslint",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "dotenv -e ../../.env.test -- jest --runInBand",
     "clean": "rm -rf .turbo dist node_modules"
   },
