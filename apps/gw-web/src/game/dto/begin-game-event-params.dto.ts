@@ -10,7 +10,7 @@ export class BeginGameEventParamsDto
     'gameId',
     'startAt',
     'finishAt',
-    'defaultSessionDurationSeconds',
+    'sessionDurationSeconds',
     'simultaneousSessionsCount',
     'cancellationReason',
     'isCancelled',
@@ -27,9 +27,9 @@ export class BeginGameEventParamsDto
   declare readonly displayName?: string;
 
   @IsOptional()
-  @Min(1)
+  @Min(5)
   @IsInt()
-  declare readonly defaultSessionDurationSeconds?: number;
+  declare readonly sessionDurationSeconds?: number;
 
   @IsOptional()
   @IsInt()

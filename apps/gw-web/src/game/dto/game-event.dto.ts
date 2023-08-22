@@ -33,10 +33,10 @@ export class GameEventDto
   readonly displayName?: string;
 
   /**
-   * Default game event session duration in seconds.
+   * A game event session duration in seconds.
    * @default 120
    */
-  readonly defaultSessionDurationSeconds: number;
+  readonly sessionDurationSeconds: number;
 
   @ApiProperty({
     description: 'Games event sessions limit. It would generate no more sessions if the parameter reached.',

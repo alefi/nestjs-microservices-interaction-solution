@@ -18,7 +18,7 @@
     "@lib/utils": "0.0.1",
     "@nestjs/bull": "10.0.1",
     "@prisma/client": "5.1.1",
-    "bullmq": "4.7.4",
+    "bullmq": "4.8.0",
     "eslint-config-custom": "*",
     "zod": "3.22.1"
   },

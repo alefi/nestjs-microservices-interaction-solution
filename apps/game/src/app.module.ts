@@ -7,6 +7,7 @@ import { configParserFactory, ExceptionInterceptor } from '@lib/utils';
 import { config, ConfigSchema } from './config';
 import { GameModule } from './game';
 import { QueueModule } from './queue';
+
 @Module({
   imports: [
     ConfigModule.forRoot({

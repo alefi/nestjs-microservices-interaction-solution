@@ -27,7 +27,7 @@ message BeginGameEventParamsDto {
   string game_id = 1;
   optional string name = 2;
   optional string display_name = 3;
-  optional int32 default_session_duration_seconds = 4;
+  optional int32 session_duration_seconds = 4;
   optional int32 sessions_count_limit = 5;
   optional int32 simultaneous_sessions_count = 6;
   string start_at = 7;
@@ -55,7 +55,7 @@ message GameEventDto {
   string game_id = 2;
   optional string name = 3;
   optional string display_name = 4;
-  int32 default_session_duration_seconds = 5;
+  int32 session_duration_seconds = 5;
   optional int32 sessions_count_limit = 6;
   int32 simultaneous_sessions_count = 7;
   string start_at = 8;
