@@ -1,16 +1,20 @@
 /* eslint-disable */
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
-import { CurrencyAmountDto, OperationResultDto } from "./shared/struct.pb";
+import { Struct } from "./google/protobuf/struct.pb";
+import { CurrencyAmountDto } from "./shared/struct.pb";
 
 export const protobufPackage = "game_service.v1";
 
 export interface ApplyBidParamsDto {
   gameSessionId: string;
   userId: string;
-  walletAccountId?: string | undefined;
+  /** Each game has its own value model */
+  value: { [key: string]: any } | undefined;
   currencyAmount: CurrencyAmountDto | undefined;
+  walletAccountId?: string | undefined;
 }
 
 export interface BeginGameEventParamsDto {
@@ -28,6 +32,17 @@ export interface EndGameEventParamsDto {
   id: string;
   gameId: string;
   cancellationReason?: string | undefined;
+}
+
+export interface GameBidDto {
+  id: string;
+  gameSessionId: string;
+  walletEntryId: string;
+  /** Don't return this to a client. */
+  bidHash: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface GameEventDto {
@@ -88,8 +103,10 @@ export interface ListGamesParamsDto {
 
 export const GAME_SERVICE_V1_PACKAGE_NAME = "game_service.v1";
 
+wrappers[".google.protobuf.Struct"] = { fromObject: Struct.wrap, toObject: Struct.unwrap } as any;
+
 export interface GameServiceClient {
-  applyBid(request: ApplyBidParamsDto, metadata?: Metadata): Observable<OperationResultDto>;
+  applyBid(request: ApplyBidParamsDto, metadata?: Metadata): Observable<GameBidDto>;
 
   beginGameEvent(request: BeginGameEventParamsDto, metadata?: Metadata): Observable<GameEventDto>;
 
@@ -103,10 +120,7 @@ export interface GameServiceClient {
 }
 
 export interface GameServiceController {
-  applyBid(
-    request: ApplyBidParamsDto,
-    metadata?: Metadata,
-  ): Promise<OperationResultDto> | Observable<OperationResultDto> | OperationResultDto;
+  applyBid(request: ApplyBidParamsDto, metadata?: Metadata): Promise<GameBidDto> | Observable<GameBidDto> | GameBidDto;
 
   beginGameEvent(
     request: BeginGameEventParamsDto,

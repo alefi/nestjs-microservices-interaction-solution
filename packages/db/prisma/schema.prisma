@@ -142,7 +142,29 @@ model GameSession {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
+  bids Bid[] @relation("BidGameSession")
+
   @@map("game_sessions")
+  @@schema("gaming")
+}
+
+model Bid {
+  id String @id @default(uuid()) @db.Uuid
+
+  gameSession   GameSession @relation("BidGameSession", fields: [gameSessionId], references: [id])
+  gameSessionId String      @map("game_session_id") @db.Uuid
+
+  walletEntry   WalletEntry @relation("BidWalletEntry", fields: [walletEntryId], references: [id])
+  walletEntryId String      @map("wallet_entry_id") @db.Uuid
+
+  status    Status
+  valueHash String @map("value_hash")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([valueHash, status])
+  @@map("bids")
   @@schema("gaming")
 }
 
@@ -187,6 +209,8 @@ model WalletEntry {
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  bids Bid[] @relation("BidWalletEntry")
 
   @@unique([reference, walletAccountId])
   @@map("wallet_entries")

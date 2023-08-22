@@ -47,6 +47,7 @@ This code is provided as a PoC and it could be improved. For instance:
 - better exception handling, including creation of business level exceptions and map them on appropriated layers
 - use some accounting library for financial operations
 - get rid of DRY principle violation in several places on codebase
+- return null for optional properties within some DTOs
 - use [Temporal](https://temporal.io) for a process orchestration
 
 ## Techniques

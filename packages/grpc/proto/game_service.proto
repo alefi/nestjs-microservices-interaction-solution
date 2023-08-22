@@ -4,10 +4,11 @@ syntax = "proto3";
 
 package game_service.v1;
 
+import "google/protobuf/struct.proto";
 import "shared/struct.proto";
 
 service GameService {
-  rpc ApplyBid(ApplyBidParamsDto) returns (struct.v1.OperationResultDto) {}
+  rpc ApplyBid(ApplyBidParamsDto) returns (GameBidDto) {}
   rpc BeginGameEvent(BeginGameEventParamsDto) returns (GameEventDto) {}
   rpc EndGameEvent(EndGameEventParamsDto) returns (GameEventDto) {}
   rpc GetGameEventById(GetGameEventParamsDto) returns (GameEventDto) {}
@@ -18,8 +19,9 @@ service GameService {
 message ApplyBidParamsDto {
   string game_session_id = 1;
   string user_id = 2;
-  optional string wallet_account_id = 3;
+  google.protobuf.Struct value = 3; // Each game has its own value model
   struct.v1.CurrencyAmountDto currency_amount = 4;
+  optional string wallet_account_id = 5;
 }
 
 message BeginGameEventParamsDto {
@@ -37,6 +39,16 @@ message EndGameEventParamsDto {
   string id = 1;
   string game_id = 2;
   optional string cancellation_reason = 3;
+}
+
+message GameBidDto {
+  string id = 1;
+  string game_session_id = 2;
+  string wallet_entry_id = 3;
+  string value_hash = 4; // Don't return this to a client.
+  string status = 5;
+  string created_at = 6;
+  string updated_at = 7;
 }
 
 message GameEventDto {
