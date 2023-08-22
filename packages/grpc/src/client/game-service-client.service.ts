@@ -2,7 +2,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-import { GetEntityByIdParamsDto, OperationResultDto } from '../typings/shared/struct.pb';
+import { OperationResultDto } from '../typings/shared/struct.pb';
 import {
   ApplyBidParamsDto,
   BeginGameEventParamsDto,
@@ -11,6 +11,7 @@ import {
   GAME_SERVICE_V1_PACKAGE_NAME,
   GameEventDto,
   GameServiceClient,
+  GetGameEventParamsDto,
   ListGameEventsDto,
   ListGameEventsParamsDto,
   ListGamesDto,
@@ -35,7 +36,7 @@ export class GameServiceClientService implements GameServiceClient, OnModuleInit
     return this.gameServiceClient.endGameEvent(request);
   }
 
-  getGameEventById(request: GetEntityByIdParamsDto): Observable<GameEventDto> {
+  getGameEventById(request: GetGameEventParamsDto): Observable<GameEventDto> {
     return this.gameServiceClient.getGameEventById(request);
   }
 

@@ -1,6 +1,5 @@
 import { OmitType } from '@nestjs/swagger';
-import { IsISO8601, IsInt, IsOptional, IsUUID, Max, Min } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { IsISO8601, IsInt, IsOptional, Max, Min } from 'class-validator';
 
 import { GameServiceV1 } from '@lib/grpc';
 import { GameEventDto } from './game-event.dto';
@@ -8,6 +7,7 @@ import { GameEventDto } from './game-event.dto';
 export class BeginGameEventParamsDto
   extends OmitType(GameEventDto, [
     'id',
+    'gameId',
     'startAt',
     'finishAt',
     'defaultSessionDurationSeconds',
@@ -18,12 +18,8 @@ export class BeginGameEventParamsDto
     'createdAt',
     'updatedAt',
   ])
-  implements GameServiceV1.BeginGameEventParamsDto
+  implements Omit<GameServiceV1.BeginGameEventParamsDto, 'gameId'>
 {
-  @Transform(({ value }) => String(value).toLocaleLowerCase())
-  @IsUUID()
-  declare readonly gameId: string;
-
   @IsOptional()
   declare readonly name?: string;
 

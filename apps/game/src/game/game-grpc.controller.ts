@@ -1,6 +1,6 @@
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 
-import { GameServiceV1, StructV1 } from '@lib/grpc';
+import { GameServiceV1 } from '@lib/grpc';
 import { GameDto, GameEventDto, ListGameEventsDto, ListGamesDto } from './dto';
 import { GameService } from './game.service';
 
@@ -21,8 +21,8 @@ export class GameGrpcController {
   }
 
   @GrpcMethod('GameService')
-  async getGameEventById(getEntityByIdParams: StructV1.GetEntityByIdParamsDto): Promise<GameEventDto> {
-    const gameEvent = await this.gameService.getGameEventById(getEntityByIdParams);
+  async getGameEventById(getGameEventParams: GameServiceV1.GetGameEventParamsDto): Promise<GameEventDto> {
+    const gameEvent = await this.gameService.getGameEventById(getGameEventParams);
     return GameEventDto.fromModel(gameEvent);
   }
 

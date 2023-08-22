@@ -6,3 +6,4 @@ export * from './list-game-events-params.dto';
 export * from './list-game-events.dto';
 export * from './list-games.dto';
 export * from './list-games-params.dto';
+export * from './shared';

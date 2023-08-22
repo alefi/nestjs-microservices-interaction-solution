@@ -2,7 +2,7 @@
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { CurrencyAmountDto, GetEntityByIdParamsDto, OperationResultDto } from "./shared/struct.pb";
+import { CurrencyAmountDto, OperationResultDto } from "./shared/struct.pb";
 
 export const protobufPackage = "game_service.v1";
 
@@ -25,6 +25,7 @@ export interface BeginGameEventParamsDto {
 
 export interface EndGameEventParamsDto {
   id: string;
+  gameId: string;
   cancellationReason?: string | undefined;
 }
 
@@ -52,6 +53,11 @@ export interface GameDto {
   isAvailable: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface GetGameEventParamsDto {
+  id: string;
+  gameId: string;
 }
 
 export interface ListGameEventsDto {
@@ -87,7 +93,7 @@ export interface GameServiceClient {
 
   endGameEvent(request: EndGameEventParamsDto, metadata?: Metadata): Observable<GameEventDto>;
 
-  getGameEventById(request: GetEntityByIdParamsDto, metadata?: Metadata): Observable<GameEventDto>;
+  getGameEventById(request: GetGameEventParamsDto, metadata?: Metadata): Observable<GameEventDto>;
 
   listGameEvents(request: ListGameEventsParamsDto, metadata?: Metadata): Observable<ListGameEventsDto>;
 
@@ -111,7 +117,7 @@ export interface GameServiceController {
   ): Promise<GameEventDto> | Observable<GameEventDto> | GameEventDto;
 
   getGameEventById(
-    request: GetEntityByIdParamsDto,
+    request: GetGameEventParamsDto,
     metadata?: Metadata,
   ): Promise<GameEventDto> | Observable<GameEventDto> | GameEventDto;
 

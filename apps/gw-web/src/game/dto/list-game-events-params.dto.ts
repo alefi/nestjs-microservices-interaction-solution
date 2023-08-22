@@ -1,22 +1,14 @@
-import { ApiProperty, IntersectionType, PartialType, PickType } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsUUID } from 'class-validator';
+import { PartialType, PickType } from '@nestjs/swagger';
+import { IsBoolean, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 import { GameServiceV1 } from '@lib/grpc';
 import { GameEventDto } from './game-event.dto';
 
 export class ListGameEventsParamsDto
-  extends IntersectionType(PickType(GameEventDto, ['gameId']), PartialType(PickType(GameEventDto, ['isFinished'])))
-  implements GameServiceV1.ListGameEventsParamsDto
+  extends PartialType(PickType(GameEventDto, ['isFinished']))
+  implements Pick<GameServiceV1.ListGameEventsParamsDto, 'isFinished'>
 {
-  @ApiProperty({
-    description: 'Filter events by a particular game.',
-    format: 'uuid',
-  })
-  @Transform(({ value }) => String(value).toLowerCase())
-  @IsUUID()
-  declare readonly gameId: string;
-
   /**
    * Filter only finished game events
    */

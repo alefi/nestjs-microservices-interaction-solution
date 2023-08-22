@@ -10,7 +10,7 @@ service GameService {
   rpc ApplyBid(ApplyBidParamsDto) returns (struct.v1.OperationResultDto) {}
   rpc BeginGameEvent(BeginGameEventParamsDto) returns (GameEventDto) {}
   rpc EndGameEvent(EndGameEventParamsDto) returns (GameEventDto) {}
-  rpc GetGameEventById(struct.v1.GetEntityByIdParamsDto) returns (GameEventDto) {}
+  rpc GetGameEventById(GetGameEventParamsDto) returns (GameEventDto) {}
   rpc ListGameEvents(ListGameEventsParamsDto) returns (ListGameEventsDto) {}
   rpc ListGames(ListGamesParamsDto) returns (ListGamesDto) {}
 }
@@ -34,7 +34,8 @@ message BeginGameEventParamsDto {
 
 message EndGameEventParamsDto {
   string id = 1;
-  optional string cancellation_reason = 2;
+  string game_id = 2;
+  optional string cancellation_reason = 3;
 }
 
 message GameEventDto {
@@ -61,6 +62,11 @@ message GameDto {
   bool is_available = 5;
   string created_at = 6;
   string updated_at = 7;
+}
+
+message GetGameEventParamsDto {
+  string id = 1;
+  string game_id = 2;
 }
 
 message ListGameEventsDto {

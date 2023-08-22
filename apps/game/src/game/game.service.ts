@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Game, GameEvent, Prisma } from '@prisma/client';
 
 import { PrismaService } from '@lib/db';
-import { GameServiceV1, StructV1 } from '@lib/grpc';
+import { GameServiceV1 } from '@lib/grpc';
 
 @Injectable()
 export class GameService {
@@ -42,8 +42,8 @@ export class GameService {
     return gameEvent;
   }
 
-  async getGameEventById(getEntityByIdParams: StructV1.GetEntityByIdParamsDto): Promise<GameEvent> {
-    return await this.prismaService.gameEvent.findUniqueOrThrow({ where: getEntityByIdParams });
+  async getGameEventById(getGameEventParams: GameServiceV1.GetGameEventParamsDto): Promise<GameEvent> {
+    return await this.prismaService.gameEvent.findUniqueOrThrow({ where: getGameEventParams });
   }
 
   async listGameEvents(listGameEventsParams: GameServiceV1.ListGameEventsParamsDto): Promise<[GameEvent[], number]> {
