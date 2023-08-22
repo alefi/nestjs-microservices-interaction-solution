@@ -1,9 +1,7 @@
 /* eslint-disable */
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { wrappers } from "protobufjs";
 import { Observable } from "rxjs";
-import { Struct } from "./google/protobuf/struct.pb";
 import { CurrencyAmountDto } from "./shared/struct.pb";
 
 export const protobufPackage = "game_service.v1";
@@ -11,8 +9,8 @@ export const protobufPackage = "game_service.v1";
 export interface ApplyBidParamsDto {
   gameSessionId: string;
   userId: string;
-  /** Each game has its own value model */
-  value: { [key: string]: any } | undefined;
+  /** To improve a development velocity, it is just a string. */
+  value: string;
   currencyAmount: CurrencyAmountDto | undefined;
   walletAccountId?: string | undefined;
 }
@@ -102,8 +100,6 @@ export interface ListGamesParamsDto {
 }
 
 export const GAME_SERVICE_V1_PACKAGE_NAME = "game_service.v1";
-
-wrappers[".google.protobuf.Struct"] = { fromObject: Struct.wrap, toObject: Struct.unwrap } as any;
 
 export interface GameServiceClient {
   applyBid(request: ApplyBidParamsDto, metadata?: Metadata): Observable<GameBidDto>;

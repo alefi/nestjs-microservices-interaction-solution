@@ -4,7 +4,6 @@ syntax = "proto3";
 
 package game_service.v1;
 
-import "google/protobuf/struct.proto";
 import "shared/struct.proto";
 
 service GameService {
@@ -19,7 +18,7 @@ service GameService {
 message ApplyBidParamsDto {
   string game_session_id = 1;
   string user_id = 2;
-  google.protobuf.Struct value = 3; // Each game has its own value model
+  string value = 3; // To improve a development velocity, it is just a string.
   struct.v1.CurrencyAmountDto currency_amount = 4;
   optional string wallet_account_id = 5;
 }
