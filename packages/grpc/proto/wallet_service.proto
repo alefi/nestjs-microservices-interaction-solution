@@ -7,7 +7,7 @@ package wallet_service.v1;
 import "shared/struct.proto";
 
 service WalletService {
-  rpc AuthorizeFunds(AuthoriseFundsParamsDto) returns (struct.v1.OperationResultDto) {}
+  rpc AuthorizeFunds(AuthoriseFundsParamsDto) returns (AuthorizeFundsResultDto) {}
   rpc CommitFunds(CommitFundsParamsDto) returns (struct.v1.OperationResultDto) {}
   rpc ListWallets(ListWalletAccountsParamsDto) returns (ListWalletAccountsDto) {}
   rpc ReleaseFunds(ReleaseFundsParamsDto) returns (struct.v1.OperationResultDto) {}
@@ -16,8 +16,14 @@ service WalletService {
 message AuthoriseFundsParamsDto {
   string user_id = 1;
   string reference = 2;
-  string currency = 3;
-  string amount = 4;
+  struct.v1.CurrencyAmountDto currency_amount = 3;
+  optional string wallet_account_id = 4; // If not provided, the service will try to detect the correct wallet account by itself.
+}
+
+message AuthorizeFundsResultDto {
+  string wallet_account_id = 1;
+  string wallet_entry_id = 2;
+  optional string status = 3;
 }
 
 message CommitFundsParamsDto {

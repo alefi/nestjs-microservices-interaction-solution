@@ -2,15 +2,24 @@
 import { Metadata } from "@grpc/grpc-js";
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { Observable } from "rxjs";
-import { OperationResultDto } from "./shared/struct.pb";
+import { CurrencyAmountDto, OperationResultDto } from "./shared/struct.pb";
 
 export const protobufPackage = "wallet_service.v1";
 
 export interface AuthoriseFundsParamsDto {
   userId: string;
   reference: string;
-  currency: string;
-  amount: string;
+  currencyAmount:
+    | CurrencyAmountDto
+    | undefined;
+  /** If not provided, the service will try to detect the correct wallet account by itself. */
+  walletAccountId?: string | undefined;
+}
+
+export interface AuthorizeFundsResultDto {
+  walletAccountId: string;
+  walletEntryId: string;
+  status?: string | undefined;
 }
 
 export interface CommitFundsParamsDto {
@@ -48,7 +57,7 @@ export interface WalletAccountDto {
 export const WALLET_SERVICE_V1_PACKAGE_NAME = "wallet_service.v1";
 
 export interface WalletServiceClient {
-  authorizeFunds(request: AuthoriseFundsParamsDto, metadata?: Metadata): Observable<OperationResultDto>;
+  authorizeFunds(request: AuthoriseFundsParamsDto, metadata?: Metadata): Observable<AuthorizeFundsResultDto>;
 
   commitFunds(request: CommitFundsParamsDto, metadata?: Metadata): Observable<OperationResultDto>;
 
@@ -61,7 +70,7 @@ export interface WalletServiceController {
   authorizeFunds(
     request: AuthoriseFundsParamsDto,
     metadata?: Metadata,
-  ): Promise<OperationResultDto> | Observable<OperationResultDto> | OperationResultDto;
+  ): Promise<AuthorizeFundsResultDto> | Observable<AuthorizeFundsResultDto> | AuthorizeFundsResultDto;
 
   commitFunds(
     request: CommitFundsParamsDto,

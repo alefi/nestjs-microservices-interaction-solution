@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { AuthMethod, Currency, PrismaClient, Status } from '@prisma/client';
+import { buildUrn } from '@lib/utils';
 import {
   game1Id,
   game2Id,
@@ -14,7 +15,7 @@ import {
   walletAccount3Entry1Id,
 } from './identifiers.constants.json';
 
-const buildUrn = ({
+const buildTopUpUrn = ({
   service = 'top_up_service',
   type = 'earning',
   id,
@@ -22,7 +23,7 @@ const buildUrn = ({
   service?: string;
   type?: string;
   id: string;
-}): string => `urn:${service}:${type}:${id}`;
+}): string => buildUrn(service, type, id);
 
 const seedGamesDb = async (prisma: PrismaClient) => {
   await prisma.game.upsert({
@@ -130,7 +131,7 @@ const seedWalletEntriesDb = async (prisma: PrismaClient) => {
     update: {},
     create: {
       id: walletAccount1Entry1Id,
-      reference: buildUrn({ id: 'da105576-5f74-44a1-9320-3640ece95cdd' }),
+      reference: buildTopUpUrn({ id: 'da105576-5f74-44a1-9320-3640ece95cdd' }),
       amount: 10_500.0,
       currency: Currency.RUR,
       status: Status.success,
@@ -152,7 +153,7 @@ const seedWalletEntriesDb = async (prisma: PrismaClient) => {
     update: {},
     create: {
       id: walletAccount2Entry1Id,
-      reference: buildUrn({ id: '7917d967-d8f9-45a9-a2b2-79de8e2bd9d3' }),
+      reference: buildTopUpUrn({ id: '7917d967-d8f9-45a9-a2b2-79de8e2bd9d3' }),
       amount: 500.5,
       currency: Currency.USD,
       status: Status.success,
@@ -174,7 +175,7 @@ const seedWalletEntriesDb = async (prisma: PrismaClient) => {
     update: {},
     create: {
       id: walletAccount3Entry1Id,
-      reference: buildUrn({ id: 'def0cebe-64e7-40a3-92e9-816f22850af4' }),
+      reference: buildTopUpUrn({ id: 'def0cebe-64e7-40a3-92e9-816f22850af4' }),
       amount: 253.3,
       currency: Currency.USD,
       status: Status.success,

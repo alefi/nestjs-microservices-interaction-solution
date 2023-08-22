@@ -30,6 +30,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "@lib/utils": "0.0.1",
     "@prisma/client": "5.1.1",
     "eslint-config-custom": "*"
   },

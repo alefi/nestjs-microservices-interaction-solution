@@ -9,7 +9,7 @@ export class GameEventDto implements GameServiceV1.GameEventDto, ITimestampsMeta
   readonly name?: string;
   readonly displayName?: string;
   readonly defaultSessionDurationSeconds: number;
-  readonly sessionsCountLimit: number;
+  readonly sessionsCountLimit?: number;
   readonly simultaneousSessionsCount: number;
   readonly startAt: string;
   readonly finishAt: string;
