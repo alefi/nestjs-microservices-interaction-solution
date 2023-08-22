@@ -136,8 +136,8 @@ model GameSession {
   startAt  DateTime @map("start_at") @db.Timestamptz
   finishAt DateTime @map("finish_at") @db.Timestamptz
 
-  isFinished Boolean @map("is_finished")
-  wonHash    String? @map("won_hash")
+  isFinished  Boolean @map("is_finished")
+  winningHash String? @map("winning_hash")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
