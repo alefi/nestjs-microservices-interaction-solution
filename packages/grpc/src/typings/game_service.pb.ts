@@ -39,7 +39,7 @@ export interface GameBidDto {
   gameSessionId: string;
   walletEntryId: string;
   /** Don't return this to a client. */
-  bidHash: string;
+  valueHash: string;
   status: string;
   createdAt: string;
   updatedAt: string;
