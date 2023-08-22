@@ -11,9 +11,13 @@ import {
   GameBidDto,
   GameEventDto,
   GameServiceClient,
+  GameSessionDto,
   GetGameEventParamsDto,
+  GetGameSessionParamsDto,
   ListGameEventsDto,
   ListGameEventsParamsDto,
+  ListGameSessionsDto,
+  ListGameSessionsParamsDto,
   ListGamesDto,
   ListGamesParamsDto,
 } from '../typings/game_service.pb';
@@ -40,8 +44,16 @@ export class GameServiceClientService implements GameServiceClient, OnModuleInit
     return this.gameServiceClient.getGameEventById(request);
   }
 
+  getGameSessionById(request: GetGameSessionParamsDto): Observable<GameSessionDto> {
+    return this.gameServiceClient.getGameSessionById(request);
+  }
+
   listGameEvents(request: ListGameEventsParamsDto): Observable<ListGameEventsDto> {
     return this.gameServiceClient.listGameEvents(request);
+  }
+
+  listGameSessions(request: ListGameSessionsParamsDto): Observable<ListGameSessionsDto> {
+    return this.gameServiceClient.listGameSessions(request);
   }
 
   listGames(request: ListGamesParamsDto): Observable<ListGamesDto> {

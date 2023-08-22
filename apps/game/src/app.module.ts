@@ -15,19 +15,19 @@ import { QueueModule } from './queue';
       validate: configParserFactory<ConfigSchema>(config),
     }),
     BullModule.forRootAsync({
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         redis: {
-          // TODO Turn it on after testing:
-          // lazyConnect: true,
+          lazyConnect: true,
           host: configService.get('REDIS_HOST'),
           port: configService.get('REDIS_PORT'),
         },
       }),
     }),
+    QueueModule,
 
     GameModule,
-    QueueModule,
   ],
 
   /**

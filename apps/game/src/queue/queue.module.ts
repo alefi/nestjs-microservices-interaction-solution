@@ -1,17 +1,17 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 
-import { QueueService } from './queue.service';
 import { QueueName } from './config';
-import { GameSessionsQueueConsumerService } from './game-sessions-queue-consumer.service';
+import { GameSessionsPublisherService } from './game-sessions-publisher.service';
+import { GameEventsPublisherService } from './game-events-publisher.service';
 
 /**
- * @description For a development velocity reason, we bound this entire module to a single queue.
+ * @description For a development velocity reason, we bound this entire module to a couple of queue.
  * Note: Please don't forget it is a PoC project :)
  */
 @Module({
-  imports: [BullModule.registerQueue({ name: QueueName.GameSessions })],
-  providers: [QueueService, GameSessionsQueueConsumerService],
-  exports: [QueueService, GameSessionsQueueConsumerService],
+  imports: [BullModule.registerQueue({ name: QueueName.GameEvents }, { name: QueueName.GameSessions })],
+  providers: [GameEventsPublisherService, GameSessionsPublisherService],
+  exports: [GameEventsPublisherService, GameSessionsPublisherService],
 })
 export class QueueModule {}

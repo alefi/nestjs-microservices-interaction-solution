@@ -70,9 +70,25 @@ export interface GameDto {
   updatedAt: string;
 }
 
+export interface GameSessionDto {
+  id: string;
+  gameEventId: string;
+  startAt: string;
+  finishAt: string;
+  isFinished: boolean;
+  winningHash?: string | undefined;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface GetGameEventParamsDto {
   id: string;
   gameId: string;
+}
+
+export interface GetGameSessionParamsDto {
+  id: string;
+  gameEventId: string;
 }
 
 export interface ListGameEventsDto {
@@ -82,11 +98,26 @@ export interface ListGameEventsDto {
 }
 
 export interface ListGameEventsParamsDto {
-  gameId?:
+  gameId?: string | undefined;
+  isCancelled?:
+    | boolean
+    | undefined;
+  /** TODO add filtering range */
+  isFinished?: boolean | undefined;
+}
+
+export interface ListGameSessionsParamsDto {
+  gameEventId?:
     | string
     | undefined;
   /** TODO add filtering range */
   isFinished?: boolean | undefined;
+}
+
+export interface ListGameSessionsDto {
+  /** If items is empty, only total would be passed */
+  items: GameSessionDto[];
+  total: number;
 }
 
 export interface ListGamesDto {
@@ -110,7 +141,11 @@ export interface GameServiceClient {
 
   getGameEventById(request: GetGameEventParamsDto, metadata?: Metadata): Observable<GameEventDto>;
 
+  getGameSessionById(request: GetGameSessionParamsDto, metadata?: Metadata): Observable<GameSessionDto>;
+
   listGameEvents(request: ListGameEventsParamsDto, metadata?: Metadata): Observable<ListGameEventsDto>;
+
+  listGameSessions(request: ListGameSessionsParamsDto, metadata?: Metadata): Observable<ListGameSessionsDto>;
 
   listGames(request: ListGamesParamsDto, metadata?: Metadata): Observable<ListGamesDto>;
 }
@@ -133,10 +168,20 @@ export interface GameServiceController {
     metadata?: Metadata,
   ): Promise<GameEventDto> | Observable<GameEventDto> | GameEventDto;
 
+  getGameSessionById(
+    request: GetGameSessionParamsDto,
+    metadata?: Metadata,
+  ): Promise<GameSessionDto> | Observable<GameSessionDto> | GameSessionDto;
+
   listGameEvents(
     request: ListGameEventsParamsDto,
     metadata?: Metadata,
   ): Promise<ListGameEventsDto> | Observable<ListGameEventsDto> | ListGameEventsDto;
+
+  listGameSessions(
+    request: ListGameSessionsParamsDto,
+    metadata?: Metadata,
+  ): Promise<ListGameSessionsDto> | Observable<ListGameSessionsDto> | ListGameSessionsDto;
 
   listGames(
     request: ListGamesParamsDto,
@@ -151,7 +196,9 @@ export function GameServiceControllerMethods() {
       "beginGameEvent",
       "endGameEvent",
       "getGameEventById",
+      "getGameSessionById",
       "listGameEvents",
+      "listGameSessions",
       "listGames",
     ];
     for (const method of grpcMethods) {

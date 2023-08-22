@@ -11,7 +11,9 @@ service GameService {
   rpc BeginGameEvent(BeginGameEventParamsDto) returns (GameEventDto) {}
   rpc EndGameEvent(EndGameEventParamsDto) returns (GameEventDto) {}
   rpc GetGameEventById(GetGameEventParamsDto) returns (GameEventDto) {}
+  rpc GetGameSessionById(GetGameSessionParamsDto) returns (GameSessionDto) {}
   rpc ListGameEvents(ListGameEventsParamsDto) returns (ListGameEventsDto) {}
+  rpc ListGameSessions(ListGameSessionsParamsDto) returns (ListGameSessionsDto) {}
   rpc ListGames(ListGamesParamsDto) returns (ListGamesDto) {}
 }
 
@@ -77,9 +79,25 @@ message GameDto {
   string updated_at = 7;
 }
 
+message GameSessionDto {
+  string id = 1;
+  string gameEventId = 2;
+  string start_at = 3;
+  string finish_at = 4;
+  bool is_finished = 5;
+  optional string winning_hash = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
 message GetGameEventParamsDto {
   string id = 1;
   string game_id = 2;
+}
+
+message GetGameSessionParamsDto {
+  string id = 1;
+  string game_event_id = 2;
 }
 
 message ListGameEventsDto {
@@ -90,8 +108,21 @@ message ListGameEventsDto {
 
 message ListGameEventsParamsDto {
   optional string game_id = 1;
+  optional bool is_cancelled = 2;
+  optional bool is_finished = 3;
+  // TODO add filtering range
+}
+
+message ListGameSessionsParamsDto {
+  optional string game_event_id = 1;
   optional bool is_finished = 2;
   // TODO add filtering range
+}
+
+message ListGameSessionsDto {
+  // If items is empty, only total would be passed
+  repeated GameSessionDto items = 1;
+  int32 total = 2;
 }
 
 message ListGamesDto {
