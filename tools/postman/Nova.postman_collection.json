@@ -1,0 +1,463 @@
+{
+	"info": {
+		"_postman_id": "1bbd221e-dde6-4ab6-ae1d-5ec64d80623c",
+		"name": "Nova",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "368395"
+	},
+	"item": [
+		{
+			"name": "game",
+			"item": [
+				{
+					"name": "bid",
+					"item": [
+						{
+							"name": "Apply bid",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-user-id",
+										"value": "{{USER_ID_1}}",
+										"description": "Sylvia",
+										"type": "text"
+									},
+									{
+										"key": "x-user-id",
+										"value": "{{USER_ID_2}}",
+										"description": "Bob",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"gameSessionId\": \"{{DEFAULT_GAME_SESSION_ID}}\",\n    \"userId\": \"{{DEFAULT_USER_ID}}\",\n    \"value\": \"101\",\n    \"currencyAmount\": {\n        \"currency\": \"USD\",\n        \"amount\": \"15.75\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/session/:sid/bid?x-user-id={{DEFAULT_USER_ID}}",
+									"host": [
+										"{{WEB_GATEWAY_URL}}"
+									],
+									"path": [
+										"v1",
+										"game",
+										":id",
+										"session",
+										":sid",
+										"bid"
+									],
+									"query": [
+										{
+											"key": "x-user-id",
+											"value": "{{DEFAULT_USER_ID}}"
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{DEFAULT_GAME_ID}}"
+										},
+										{
+											"key": "sid",
+											"value": "{{DEFAULT_GAME_SESSION_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "event",
+					"item": [
+						{
+							"name": "Begin game event",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"DEFAULT_GAME_ID\", jsonData.gameId);",
+											"postman.setEnvironmentVariable(\"DEFAULT_GAME_EVENT_ID\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Guess the number marathon\",\n    \"simultaneousSessionsCount\": 1,\n    \"startAt\": \"2023-08-22T21:00:00.000Z\",\n    \"finishAt\": \"2023-08-23T20:59:59.999Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event",
+									"host": [
+										"{{WEB_GATEWAY_URL}}"
+									],
+									"path": [
+										"v1",
+										"game",
+										":id",
+										"event"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{DEFAULT_GAME_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "End game event",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cancellationReason\": \"Stopped due to abuse detected\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event/:eid",
+									"host": [
+										"{{WEB_GATEWAY_URL}}"
+									],
+									"path": [
+										"v1",
+										"game",
+										":id",
+										"event",
+										":eid"
+									],
+									"query": [
+										{
+											"key": "isFinished",
+											"value": "true",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{DEFAULT_GAME_ID}}"
+										},
+										{
+											"key": "eid",
+											"value": "{{DEFAULT_GAME_EVENT_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List game events",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"DEFAULT_GAME_EVENT_ID\", jsonData.items[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event",
+									"host": [
+										"{{WEB_GATEWAY_URL}}"
+									],
+									"path": [
+										"v1",
+										"game",
+										":id",
+										"event"
+									],
+									"query": [
+										{
+											"key": "isFinished",
+											"value": "true",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{DEFAULT_GAME_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get game event by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event/:eid",
+									"host": [
+										"{{WEB_GATEWAY_URL}}"
+									],
+									"path": [
+										"v1",
+										"game",
+										":id",
+										"event",
+										":eid"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{DEFAULT_GAME_ID}}"
+										},
+										{
+											"key": "eid",
+											"value": "{{DEFAULT_GAME_EVENT_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "session",
+					"item": [
+						{
+							"name": "List game sessions",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"DEFAULT_GAME_SESSION_ID\", jsonData.items[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/session",
+									"host": [
+										"{{WEB_GATEWAY_URL}}"
+									],
+									"path": [
+										"v1",
+										"game",
+										":id",
+										"session"
+									],
+									"query": [
+										{
+											"key": "isFinished",
+											"value": "true",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{DEFAULT_GAME_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get game session by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/session/:sid",
+									"host": [
+										"{{WEB_GATEWAY_URL}}"
+									],
+									"path": [
+										"v1",
+										"game",
+										":id",
+										"session",
+										":sid"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{DEFAULT_GAME_ID}}"
+										},
+										{
+											"key": "sid",
+											"value": "{{DEFAULT_GAME_SESSION_ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "List games",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"DEFAULT_GAME_ID\", jsonData.items[0].id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{WEB_GATEWAY_URL}}/v1/game?isAvailable=true",
+							"host": [
+								"{{WEB_GATEWAY_URL}}"
+							],
+							"path": [
+								"v1",
+								"game"
+							],
+							"query": [
+								{
+									"key": "isAvailable",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"DEFAULT_USER_ID\", jsonData.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-user-id",
+								"value": "{{USER_ID_1}}",
+								"description": "Sylvia",
+								"type": "text"
+							},
+							{
+								"key": "x-user-id",
+								"value": "{{USER_ID_2}}",
+								"description": "Bob",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{WEB_GATEWAY_URL}}/v1/user/profile/me",
+							"host": [
+								"{{WEB_GATEWAY_URL}}"
+							],
+							"path": [
+								"v1",
+								"user",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "wallet",
+			"item": [
+				{
+					"name": "List wallets",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-user-id",
+								"value": "{{DEFAULT_USER_ID}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/v1/wallet?isAvailable=true",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"wallet"
+							],
+							"query": [
+								{
+									"key": "isAvailable",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

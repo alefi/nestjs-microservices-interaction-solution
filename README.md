@@ -62,8 +62,6 @@ The microservices interact with each other using a direct gRpc call as a primary
 
 The Open API document is available by relative path `<HOST:WEB_GATEWAY_SERVICE_HTTP_PORT>/docs` (e.g. `localhost:3000/docs`).
 
-TODO Append the Postman document for be able testing locally.
-
 ## Usage
 
 Please read this section carefully.
@@ -136,6 +134,8 @@ or, to precisely run only the client application, run the following command:
 ```console
 npm -w gw-web run dev
 ```
+
+> 📝 _This repository includes [Postman documents](./tools/postman/) that could be imported and used for calling to the API._
 
 ### Add or update dependencies
 
