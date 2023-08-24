@@ -39,7 +39,8 @@ message BeginGameEventParamsDto {
 message EndGameEventParamsDto {
   string id = 1;
   string game_id = 2;
-  optional string cancellation_reason = 3;
+  bool is_cancelled = 3;
+  optional string cancellation_reason = 4;
 }
 
 message GameBidDto {

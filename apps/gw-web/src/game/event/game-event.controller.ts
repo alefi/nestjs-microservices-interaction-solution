@@ -45,6 +45,7 @@ export class GameEventController {
     const gameEvent = await this.gameEventService.endGameEvent({
       ...getGameEventParams,
       ...endGameEventParams,
+      isCancelled: true,
     });
     return GameEventDto.create(gameEvent);
   }
