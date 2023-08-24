@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { type Bid } from '@prisma/client';
+import { WalletEntryState, type Bid } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { WalletServiceClientService, type GameServiceV1, WalletServiceV1 } from '@lib/grpc';
 import { buildUrn } from '@lib/utils';
@@ -14,9 +14,8 @@ export class GameBidService {
   ) {}
 
   async applyBid(applyBidParams: GameServiceV1.ApplyBidParamsDto): Promise<Bid> {
-    const { currencyAmount, gameSessionId, userId } = applyBidParams;
-
     return await this.prismaService.$transaction(async client => {
+      const { currencyAmount, gameSessionId, userId } = applyBidParams;
       const gameSession = await client.gameSession.findUniqueOrThrow({
         where: {
           id: gameSessionId,
@@ -40,7 +39,7 @@ export class GameBidService {
 
       // TODO Handle errors carefully, map them into business exceptions
       // TODO Use enum instead (think of avoiding DRY, because we already have WalletEntryState enum on database layer)
-      if (state === 'failed') {
+      if (state === WalletEntryState.failed) {
         throw Error('Failed to authorise funds');
       }
 
@@ -52,7 +51,6 @@ export class GameBidService {
           valueHash: 'hashed_value',
         },
       });
-
       return gameBid;
     });
   }
