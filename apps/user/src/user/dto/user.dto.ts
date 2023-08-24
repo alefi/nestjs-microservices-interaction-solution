@@ -1,5 +1,4 @@
 import type { User } from '@prisma/client';
-
 import { UserServiceV1 } from '@lib/grpc';
 import { ITimestampsMeta } from '@lib/utils';
 

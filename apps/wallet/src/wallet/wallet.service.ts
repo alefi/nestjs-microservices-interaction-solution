@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, WalletAccount } from '@prisma/client';
 
+import { Prisma, type WalletAccount } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { type WalletServiceV1 } from '@lib/grpc';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { Bid, Status } from '@prisma/client';
+import { type Bid, Status } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { buildUrn } from '@lib/utils';
 import { WalletServiceClientService, type GameServiceV1, type WalletServiceV1 } from '@lib/grpc';

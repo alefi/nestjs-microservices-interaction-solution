@@ -1,5 +1,4 @@
 import type { GameSession } from '@prisma/client';
-
 import { GameServiceV1 } from '@lib/grpc';
 import { ITimestampsMeta } from '@lib/utils';
 

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GameEvent, Prisma } from '@prisma/client';
 
+import { type GameEvent, Prisma } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { type GameServiceV1 } from '@lib/grpc';
 import { dateTime } from '@lib/utils';

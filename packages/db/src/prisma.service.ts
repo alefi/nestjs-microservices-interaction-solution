@@ -1,5 +1,6 @@
 import { Injectable, INestMicroservice, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()

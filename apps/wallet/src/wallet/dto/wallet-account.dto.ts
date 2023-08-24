@@ -1,5 +1,4 @@
 import type { WalletAccount } from '@prisma/client';
-
 import { StructV1, WalletServiceV1 } from '@lib/grpc';
 import { IAuthorisedCurrencyAmount, ITimestampsMeta } from '@lib/utils';
 
