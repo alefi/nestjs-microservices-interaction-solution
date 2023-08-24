@@ -86,7 +86,6 @@
 									"script": {
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
-											"postman.setEnvironmentVariable(\"DEFAULT_GAME_ID\", jsonData.gameId);",
 											"postman.setEnvironmentVariable(\"DEFAULT_GAME_EVENT_ID\", jsonData.id);"
 										],
 										"type": "text/javascript"
@@ -175,18 +174,6 @@
 						},
 						{
 							"name": "List game events",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"var jsonData = JSON.parse(responseBody);",
-											"postman.setEnvironmentVariable(\"DEFAULT_GAME_EVENT_ID\", jsonData.items[0].id);"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
 							"request": {
 								"method": "GET",
 								"header": [],
