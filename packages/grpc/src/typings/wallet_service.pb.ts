@@ -19,7 +19,7 @@ export interface AuthoriseFundsParamsDto {
 export interface AuthorizeFundsResultDto {
   walletAccountId: string;
   walletEntryId: string;
-  status?: string | undefined;
+  state: string;
 }
 
 export interface CommitFundsParamsDto {
@@ -50,6 +50,19 @@ export interface WalletAccountDto {
   /** calculated */
   authorisedAmount: string;
   isAvailable: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Currently, the code uses this message only for inheritance. */
+export interface WalletEntryDto {
+  id: string;
+  walletAccountId: string;
+  reference: string;
+  amount: string;
+  state: string;
+  status: string;
+  postedAt: string;
   createdAt: string;
   updatedAt: string;
 }
