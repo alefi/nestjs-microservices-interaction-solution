@@ -10,7 +10,7 @@ export class GameSessionGrpcController {
 
   @GrpcMethod('GameService')
   async getGameSessionById(getGameSessionParams: GameServiceV1.GetGameSessionParamsDto): Promise<GameSessionDto> {
-    const gameSession = await this.gameSessionService.getGameSessionById(getGameSessionParams);
+    const gameSession = await this.gameSessionService.get(getGameSessionParams);
     return GameSessionDto.fromModel(gameSession);
   }
 

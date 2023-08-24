@@ -15,11 +15,13 @@
   "dependencies": {
     "@lib/db": "0.0.1",
     "@lib/grpc": "0.0.1",
+    "@lib/queue": "0.0.1",
     "@lib/utils": "0.0.1",
-    "@nestjs/bull": "10.0.1",
+    "@nestjs/bullmq": "10.0.1",
     "@prisma/client": "5.2.0",
     "bullmq": "4.8.0",
     "eslint-config-custom": "*",
+    "ts-pattern": "5.0.5",
     "zod": "3.22.1"
   },
   "devDependencies": {

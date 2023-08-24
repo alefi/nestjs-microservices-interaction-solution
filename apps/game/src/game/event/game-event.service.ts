@@ -1,21 +1,23 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { JobsOptions } from 'bullmq';
 
 import { type GameEvent, Prisma } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { type GameServiceV1 } from '@lib/grpc';
-import { dateTime } from '@lib/utils';
-import { GameEventsPublisherService, JobName } from '../../queue';
+import { IBeginGameEventParams, IEndGameEventParams, JobName } from '@lib/queue';
+import { GameEventsPublisherService } from '../../queue';
+import { calculateDelayByFutureTimestamp, checkGameEventConstraints } from './helpers';
 
 @Injectable()
 export class GameEventService {
-  private readonly logger = new Logger(GameEventService.name, { timestamp: true });
-
   constructor(
     private readonly prismaService: PrismaService,
     private readonly gameEventsPublisherService: GameEventsPublisherService,
   ) {}
 
   async beginGameEvent(beginGameEventParams: GameServiceV1.BeginGameEventParamsDto): Promise<GameEvent> {
+    checkGameEventConstraints(beginGameEventParams);
+
     return await this.prismaService.$transaction(async client => {
       const { gameId, ...rest } = beginGameEventParams;
       const gameEvent = await client.gameEvent.create({
@@ -27,53 +29,38 @@ export class GameEventService {
       });
 
       // TODO It might be better to move an object creation into some mapping factory
-      // TODO Add constraint validation, e.g., if time is in the past, etc
-      const eventStartAt = dateTime.parse(gameEvent.startAt);
-      const remainingTimeToEventStart = eventStartAt.diffNow();
-
-      const { id: gameEventId, sessionDurationSeconds } = gameEvent;
-
-      const payload = {
-        gameEventId,
+      const { id, finishAt, sessionsCountLimit, sessionDurationSeconds, simultaneousSessionsCount, startAt } =
+        gameEvent;
+      const payload: IBeginGameEventParams = {
+        id,
+        gameId,
+        finishAt,
+        sessionsCountLimit,
         sessionDurationSeconds,
+        simultaneousSessionsCount,
       };
-      const options = { delay: remainingTimeToEventStart.toMillis() };
-
-      const job = await this.gameEventsPublisherService.publish(JobName.GameEventBeginning, payload, options);
-      this.logger.debug(`Published job id ${job.id}`);
-
+      const options: JobsOptions = { delay: calculateDelayByFutureTimestamp(startAt) };
+      options.delay = 0; // TODO Remove after testing phase and add options to method call
+      await this.gameEventsPublisherService.publish(JobName.BeginGameEvent, payload);
       return gameEvent;
     });
   }
 
   async endGameEvent(endGameEventParams: GameServiceV1.EndGameEventParamsDto): Promise<GameEvent> {
     return await this.prismaService.$transaction(async client => {
-      const gameEvent = await client.gameEvent.update({
-        data: {
-          ...endGameEventParams,
-          isCancelled: true,
-          isFinished: true,
-        },
-        where: {
-          id: endGameEventParams.id,
-          isFinished: false,
-        },
-      });
+      const gameEvent = await this.markGameEventAsFinished(endGameEventParams, client);
 
       // TODO It might be better to move an object creation into some mapping factory
-      const payload = {
-        gameEventId: gameEvent.id,
-        isCancelled: true, // TODO Calculate this using cancellationReason prop along with checking finishAt timestamp property
+      const payload: IEndGameEventParams = {
+        id: gameEvent.id,
+        isCancelled: gameEvent.isCancelled,
       };
-
-      const job = await this.gameEventsPublisherService.publish(JobName.GameEventEnding, payload);
-      this.logger.debug(`Published job id ${job.id}`);
-
+      await this.gameEventsPublisherService.publish(JobName.EndGameEvent, payload);
       return gameEvent;
     });
   }
 
-  async getGameEventById(getGameEventParams: GameServiceV1.GetGameEventParamsDto): Promise<GameEvent> {
+  async get(getGameEventParams: GameServiceV1.GetGameEventParamsDto): Promise<GameEvent> {
     return await this.prismaService.gameEvent.findUniqueOrThrow({ where: getGameEventParams });
   }
 
@@ -96,5 +83,21 @@ export class GameEventService {
     ]);
 
     return [items, total];
+  }
+
+  async markGameEventAsFinished(
+    data: Pick<GameEvent, 'id' | 'isCancelled'> & Partial<Pick<GameEvent, 'cancellationReason'>>,
+    client: Prisma.TransactionClient = this.prismaService,
+  ) {
+    return await client.gameEvent.update({
+      data: {
+        ...data,
+        isFinished: true,
+      },
+      where: {
+        id: data.id,
+        isFinished: false,
+      },
+    });
   }
 }

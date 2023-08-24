@@ -22,7 +22,7 @@ export class GameEventGrpcController {
 
   @GrpcMethod('GameService')
   async getGameEventById(getGameEventParams: GameServiceV1.GetGameEventParamsDto): Promise<GameEventDto> {
-    const gameEvent = await this.gameEventService.getGameEventById(getGameEventParams);
+    const gameEvent = await this.gameEventService.get(getGameEventParams);
     return GameEventDto.fromModel(gameEvent);
   }
 
