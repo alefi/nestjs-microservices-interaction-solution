@@ -37,6 +37,20 @@ enum Status {
   @@schema("public")
 }
 
+enum WalletEntryState {
+  // If set, a transaction shows a fund reservation.
+  reserved
+  // If tje transaction is intentionally cancelled by the user or system before any processing occurs.
+  cancelled
+  // For transactions that have been fully processed and settled.
+  confirmed
+  // If the transaction or operation related to a wallet entry fails due to technical issues, insufficient funds, or other reasons.
+  failed
+
+  @@map("wallet_entry_state")
+  @@schema("wallet")
+}
+
 // *** Auth section ***
 
 model User {
@@ -201,9 +215,10 @@ model WalletEntry {
   reference String
 
   // Amount could be positive or negative
-  amount   Decimal
-  currency Currency
-  status   Status
+  amount Decimal
+
+  state  WalletEntryState
+  status Status
 
   postedAt DateTime @map("posted_at") @db.Timestamptz
 

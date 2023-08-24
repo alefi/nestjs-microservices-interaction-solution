@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { AuthMethod, Currency, PrismaClient, Status } from '@prisma/client';
+import { AuthMethod, Currency, PrismaClient, Status, WalletEntryState } from '@prisma/client';
 import { buildUrn } from '@lib/utils';
 import {
   game1Id,
@@ -133,7 +133,7 @@ const seedWalletEntriesDb = async (prisma: PrismaClient) => {
       id: walletAccount1Entry1Id,
       reference: buildTopUpUrn({ id: 'da105576-5f74-44a1-9320-3640ece95cdd' }),
       amount: 10_500.0,
-      currency: Currency.RUR,
+      state: WalletEntryState.confirmed,
       status: Status.success,
       postedAt: new Date(),
       walletAccount: {
@@ -155,7 +155,7 @@ const seedWalletEntriesDb = async (prisma: PrismaClient) => {
       id: walletAccount2Entry1Id,
       reference: buildTopUpUrn({ id: '7917d967-d8f9-45a9-a2b2-79de8e2bd9d3' }),
       amount: 500.5,
-      currency: Currency.USD,
+      state: WalletEntryState.confirmed,
       status: Status.success,
       postedAt: new Date(),
       walletAccount: {
@@ -177,7 +177,7 @@ const seedWalletEntriesDb = async (prisma: PrismaClient) => {
       id: walletAccount3Entry1Id,
       reference: buildTopUpUrn({ id: 'def0cebe-64e7-40a3-92e9-816f22850af4' }),
       amount: 253.3,
-      currency: Currency.USD,
+      state: WalletEntryState.confirmed,
       status: Status.success,
       postedAt: new Date(),
       walletAccount: {
