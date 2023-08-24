@@ -24,6 +24,7 @@ This turborepo uses [NPM](https://www.npmjs.com/) as a package manager. It inclu
 - [wallet](./apps/wallet): a [NestJs](https://nestjs.com/) app which manages wallet accounts
 - `@lib/db`: a [Prisma](https://prisma.io/) based [NextJs](https://nextjs.org/) component that intended to operate over the database
 - `@lib/grpc`: a gRPC common component containing all the protobuf files and dynamic types and event code, generated from those protobuf files
+- `@lib/queue`: a queue management component
 - `@lib/utils`: set of common utils
 - `eslint-config-custom`: `eslint` and `prettier` configurations
 - `tsconfig`: `tsconfig.json`s used throughout the monorepo

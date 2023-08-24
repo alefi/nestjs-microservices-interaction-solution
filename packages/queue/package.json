@@ -1,0 +1,22 @@
+{
+  "name": "@lib/queue",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index",
+  "types": "src/index",
+  "files": [
+    "src/**"
+  ],
+  "scripts": {
+    "build": "nest build",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "dotenv -e ../../.env.test -- jest --runInBand --passWithNoTests",
+    "clean": "rm -rf .turbo dist node_modules"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "10.2.0",
+    "@nestjs/core": "10.2.0",
+    "@nestjs/schematics": "10.0.2"
+  }
+}

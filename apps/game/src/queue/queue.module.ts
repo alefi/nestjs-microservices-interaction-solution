@@ -1,7 +1,7 @@
-import { BullModule } from '@nestjs/bull';
+import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 
-import { QueueName } from './config';
+import { QueueName } from '@lib/queue';
 import { GameSessionsPublisherService } from './game-sessions-publisher.service';
 import { GameEventsPublisherService } from './game-events-publisher.service';
 

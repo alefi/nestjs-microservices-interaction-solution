@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bull';
+import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 
-import { QueueName } from './config';
-import { QueuePublisher } from './core';
+import { QueueName, QueuePublisherService } from '@lib/queue';
 
 @Injectable()
-export class GameSessionsPublisherService extends QueuePublisher {
+export class GameSessionsPublisherService extends QueuePublisherService {
   constructor(@InjectQueue(QueueName.GameSessions) protected queue: Queue) {
     super();
   }
