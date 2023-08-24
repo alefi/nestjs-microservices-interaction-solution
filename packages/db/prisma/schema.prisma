@@ -171,7 +171,7 @@ model Bid {
   walletEntry   WalletEntry @relation("BidWalletEntry", fields: [walletEntryId], references: [id])
   walletEntryId String      @map("wallet_entry_id") @db.Uuid
 
-  status    Status
+  status    Status @default(pending)
   valueHash String @map("value_hash")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
@@ -218,7 +218,7 @@ model WalletEntry {
   amount Decimal
 
   state  WalletEntryState
-  status Status
+  status Status           @default(pending)
 
   postedAt DateTime @map("posted_at") @db.Timestamptz
 

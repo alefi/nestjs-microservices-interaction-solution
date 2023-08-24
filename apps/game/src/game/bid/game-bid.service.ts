@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { type Bid, Status } from '@prisma/client';
+import { type Bid } from '@prisma/client';
 import { PrismaService } from '@lib/db';
+import { WalletServiceClientService, type GameServiceV1, WalletServiceV1 } from '@lib/grpc';
 import { buildUrn } from '@lib/utils';
-import { WalletServiceClientService, type GameServiceV1, type WalletServiceV1 } from '@lib/grpc';
 
 @Injectable()
 export class GameBidService {
@@ -34,13 +34,13 @@ export class GameBidService {
         authoriseFundsParams.walletAccountId = applyBidParams.walletAccountId;
       }
 
-      const { walletEntryId, status } = await firstValueFrom(
+      const { walletEntryId, state } = await firstValueFrom(
         this.walletServiceClientService.authorizeFunds(authoriseFundsParams),
       );
 
       // TODO Handle errors carefully, map them into business exceptions
-      // TODO Use enum instead (think of avoiding DRY, because we already have Status enum on database layer)
-      if (status === 'failure') {
+      // TODO Use enum instead (think of avoiding DRY, because we already have WalletEntryState enum on database layer)
+      if (state === 'failed') {
         throw Error('Failed to authorise funds');
       }
 
@@ -48,7 +48,6 @@ export class GameBidService {
         data: {
           gameSessionId,
           walletEntryId,
-          status: Status.pending,
           // TODO make hash function
           valueHash: 'hashed_value',
         },
