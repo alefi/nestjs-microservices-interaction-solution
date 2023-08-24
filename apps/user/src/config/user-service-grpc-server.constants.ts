@@ -8,6 +8,9 @@ import { protoBufModulesPath } from './protobuf-modules-path.constants';
 export const userServiceGrpcServerOptions: GrpcOptions = {
   transport: Transport.GRPC,
   options: {
+    channelOptions: {
+      grpc_arg_enable_channelz: 0,
+    },
     package: [UserServiceV1.USER_SERVICE_V1_PACKAGE_NAME],
     protoPath: path.join(protoBufModulesPath, 'user_service.proto'),
     loader: {
