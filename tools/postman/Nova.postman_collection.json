@@ -97,7 +97,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Guess the number marathon\",\n    \"simultaneousSessionsCount\": 1,\n    \"startAt\": \"2023-08-22T21:00:00.000Z\",\n    \"finishAt\": \"2023-08-23T20:59:59.999Z\"\n}",
+									"raw": "{\n    \"name\": \"Guess the number marathon\",\n    \"simultaneousSessionsCount\": 1,\n    \"startAt\": \"2023-08-29T21:31:00.000Z\",\n    \"finishAt\": \"2023-08-29T20:14:59.999Z\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -189,7 +189,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event",
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event?isFinished=true",
 									"host": [
 										"{{WEB_GATEWAY_URL}}"
 									],
@@ -202,8 +202,7 @@
 									"query": [
 										{
 											"key": "isFinished",
-											"value": "true",
-											"disabled": true
+											"value": "true"
 										}
 									],
 									"variable": [
@@ -270,7 +269,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/session",
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event/:eid/session",
 									"host": [
 										"{{WEB_GATEWAY_URL}}"
 									],
@@ -278,12 +277,14 @@
 										"v1",
 										"game",
 										":id",
+										"event",
+										":eid",
 										"session"
 									],
 									"query": [
 										{
 											"key": "isFinished",
-											"value": "true",
+											"value": "false",
 											"disabled": true
 										}
 									],
@@ -291,6 +292,10 @@
 										{
 											"key": "id",
 											"value": "{{DEFAULT_GAME_ID}}"
+										},
+										{
+											"key": "eid",
+											"value": "{{DEFAULT_GAME_EVENT_ID}}"
 										}
 									]
 								}
@@ -303,7 +308,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/session/:sid",
+									"raw": "{{WEB_GATEWAY_URL}}/v1/game/:id/event/:eid/session/:sid",
 									"host": [
 										"{{WEB_GATEWAY_URL}}"
 									],
@@ -311,6 +316,8 @@
 										"v1",
 										"game",
 										":id",
+										"event",
+										":eid",
 										"session",
 										":sid"
 									],
@@ -318,6 +325,10 @@
 										{
 											"key": "id",
 											"value": "{{DEFAULT_GAME_ID}}"
+										},
+										{
+											"key": "eid",
+											"value": "{{DEFAULT_GAME_EVENT_ID}}"
 										},
 										{
 											"key": "sid",
