@@ -40,8 +40,7 @@ export class GameEventService {
         simultaneousSessionsCount,
       };
       const options: JobsOptions = { delay: calculateDelayByFutureTimestamp(startAt) };
-      options.delay = 0; // TODO Remove after testing phase and add options to method call
-      await this.gameEventsPublisherService.publish(JobName.BeginGameEvent, payload);
+      await this.gameEventsPublisherService.publish(JobName.BeginGameEvent, payload, options);
       return gameEvent;
     });
   }

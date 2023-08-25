@@ -74,7 +74,6 @@ export class GameEventsQueueProcessorService extends WorkerHost {
   }
 
   async onGameEventEnd(job: Job<IEndGameEventParams>): Promise<GameEvent> {
-    // TODO wrap into Tx
     const gameEvent = await this.gameEventService.markGameEventAsFinished(job.data);
     // TODO remove pending jobs
     return gameEvent;

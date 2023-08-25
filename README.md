@@ -47,6 +47,8 @@ This code is provided as a PoC and it could be improved. For instance:
 - add tests for real business cases
 - better exception handling, including creation of business level exceptions and map them on appropriated layers
 - use some accounting library for financial operations
+- turn each of gRpc methods which change state to idempotent methods
+- add some correlation property (e.g. transactionId) and append it to each of message involve in a financial flow (or even to each at all)
 - get rid of DRY principle violation in several places on codebase
 - return null for optional properties within some DTOs
 - consider to use BullMQ's flows
@@ -56,9 +58,20 @@ This code is provided as a PoC and it could be improved. For instance:
 
 This chapter contains minor notice regarding to approaches.
 
-### gRPС
+### gRpc
 
 The microservices interact with each other using a direct gRpc call as a primary transport layer. However, there is an additional interaction method based on the BullMQ queues. As you can notice, there is a lot of code related to gRpc. But don't be afraid, most of that code is auto-generated, since the code in the repository is based on the code-first approach. [How to build types from protobuf files?](./packages/grpc/README.md)
+
+### Idempotency
+
+An gRpc service method is idempotent if an identical request can be made once or
+several times in a row with the same effect while leaving the server in the same
+state. In other words, an idempotent method should not have any side-effects
+(except for keeping statistics).
+
+Useful links:
+
+- [Idempotent](https://developer.mozilla.org/en-US/docs/Glossary/Idempotent)
 
 ### Open API
 

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { OperationResultDto } from '../typings/shared/struct.pb';
 import {
   AuthoriseFundsParamsDto,
-  AuthorizeFundsResultDto,
+  AuthoriseFundsResultDto,
   CommitFundsParamsDto,
   ListWalletAccountsDto,
   ListWalletAccountsParamsDto,
@@ -21,8 +21,8 @@ export class WalletServiceClientService implements WalletServiceClient, OnModule
 
   constructor(@Inject(WALLET_SERVICE_V1_PACKAGE_NAME) private client: ClientGrpc) {}
 
-  authorizeFunds(request: AuthoriseFundsParamsDto): Observable<AuthorizeFundsResultDto> {
-    return this.walletServiceClient.authorizeFunds(request);
+  authoriseFunds(request: AuthoriseFundsParamsDto): Observable<AuthoriseFundsResultDto> {
+    return this.walletServiceClient.authoriseFunds(request);
   }
 
   commitFunds(request: CommitFundsParamsDto): Observable<OperationResultDto> {

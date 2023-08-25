@@ -1,7 +1,7 @@
 import { GrpcMethod, GrpcService } from '@nestjs/microservices';
 
 import { WalletServiceV1 } from '@lib/grpc';
-import { AuthorizeFundsResultDto, ListWalletAccountsDto, WalletAccountDto } from './dto';
+import { AuthoriseFundsResultDto, ListWalletAccountsDto, WalletAccountDto } from './dto';
 import { WalletService } from './wallet.service';
 
 @GrpcService()
@@ -9,11 +9,11 @@ export class WalletGrpcController {
   constructor(private readonly walletService: WalletService) {}
 
   @GrpcMethod('WalletService')
-  async authorizeFunds(
-    authorizeFundsParams: WalletServiceV1.AuthoriseFundsParamsDto,
-  ): Promise<AuthorizeFundsResultDto> {
-    const walletEntry = await this.walletService.authorizeFund(authorizeFundsParams);
-    return AuthorizeFundsResultDto.create(walletEntry);
+  async authoriseFunds(
+    authoriseFundsParams: WalletServiceV1.AuthoriseFundsParamsDto,
+  ): Promise<AuthoriseFundsResultDto> {
+    const walletEntry = await this.walletService.authoriseFunds(authoriseFundsParams);
+    return AuthoriseFundsResultDto.create(walletEntry);
   }
 
   @GrpcMethod('WalletService')

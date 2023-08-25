@@ -22,7 +22,7 @@ export class GameBidController {
   @Post()
   async applyBid(
     @Headers(tempAuthHeader) userId: string,
-    @Param() getGameBidParams: GetGameBidParamsDto,
+    @Param() getGameBidParams: Omit<GetGameBidParamsDto, 'id'>,
     @Body() applyBidParams: ApplyBidParamsDto,
   ): Promise<GameBidDto> {
     const gameBid = await this.gameBidService.applyBid({

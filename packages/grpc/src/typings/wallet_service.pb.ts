@@ -16,7 +16,7 @@ export interface AuthoriseFundsParamsDto {
   walletAccountId?: string | undefined;
 }
 
-export interface AuthorizeFundsResultDto {
+export interface AuthoriseFundsResultDto {
   walletAccountId: string;
   walletEntryId: string;
   state: string;
@@ -70,7 +70,7 @@ export interface WalletEntryDto {
 export const WALLET_SERVICE_V1_PACKAGE_NAME = "wallet_service.v1";
 
 export interface WalletServiceClient {
-  authorizeFunds(request: AuthoriseFundsParamsDto, metadata?: Metadata): Observable<AuthorizeFundsResultDto>;
+  authoriseFunds(request: AuthoriseFundsParamsDto, metadata?: Metadata): Observable<AuthoriseFundsResultDto>;
 
   commitFunds(request: CommitFundsParamsDto, metadata?: Metadata): Observable<OperationResultDto>;
 
@@ -80,10 +80,10 @@ export interface WalletServiceClient {
 }
 
 export interface WalletServiceController {
-  authorizeFunds(
+  authoriseFunds(
     request: AuthoriseFundsParamsDto,
     metadata?: Metadata,
-  ): Promise<AuthorizeFundsResultDto> | Observable<AuthorizeFundsResultDto> | AuthorizeFundsResultDto;
+  ): Promise<AuthoriseFundsResultDto> | Observable<AuthoriseFundsResultDto> | AuthoriseFundsResultDto;
 
   commitFunds(
     request: CommitFundsParamsDto,
@@ -103,7 +103,7 @@ export interface WalletServiceController {
 
 export function WalletServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["authorizeFunds", "commitFunds", "listWallets", "releaseFunds"];
+    const grpcMethods: string[] = ["authoriseFunds", "commitFunds", "listWallets", "releaseFunds"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("WalletService", method)(constructor.prototype[method], method, descriptor);

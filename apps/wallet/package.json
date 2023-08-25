@@ -19,6 +19,7 @@
     "@lib/utils": "0.0.1",
     "@prisma/client": "5.2.0",
     "eslint-config-custom": "*",
+    "ts-pattern": "5.0.5",
     "zod": "3.22.1"
   },
   "devDependencies": {
