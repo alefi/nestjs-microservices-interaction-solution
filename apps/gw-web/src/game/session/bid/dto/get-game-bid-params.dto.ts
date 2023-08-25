@@ -4,11 +4,11 @@ import { IsUUID } from 'class-validator';
 
 import { type GameServiceV1 } from '@lib/grpc';
 import { GetByIdParamsDto } from '@lib/utils';
-import { GameSessionDto } from './game-session.dto';
+import { GameBidDto } from './game-bid.dto';
 
-export class GetGameSessionParamsDto
-  extends IntersectionType(GetByIdParamsDto, PickType(GameSessionDto, ['gameEventId']))
-  implements GameServiceV1.GetGameSessionParamsDto
+export class GetGameBidParamsDto
+  extends IntersectionType(GetByIdParamsDto, PickType(GameBidDto, ['id', 'gameSessionId', 'userId']))
+  implements GameServiceV1.GetGameBidParamsDto
 {
   @Transform(({ value }) => String(value).toLowerCase())
   @IsUUID()
@@ -17,6 +17,10 @@ export class GetGameSessionParamsDto
   @Transform(({ value }) => String(value).toLowerCase())
   @IsUUID()
   readonly gameEventId: string;
+
+  @Transform(({ value }) => String(value).toLowerCase())
+  @IsUUID()
+  readonly gameSessionId: string;
 
   declare readonly id: string;
 }

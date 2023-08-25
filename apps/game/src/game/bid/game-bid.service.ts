@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-import { WalletEntryState, type Bid } from '@prisma/client';
+import { type Bid, WalletEntryState, Prisma } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { WalletServiceClientService, type GameServiceV1, WalletServiceV1 } from '@lib/grpc';
 import { buildUrn } from '@lib/utils';
@@ -47,11 +47,26 @@ export class GameBidService {
         data: {
           gameSessionId,
           walletEntryId,
+          userId,
           // TODO make hash function
           valueHash: 'hashed_value',
         },
       });
       return gameBid;
     });
+  }
+
+  async get(getGameBidParams: GameServiceV1.GetGameBidParamsDto): Promise<Bid> {
+    const { id, gameSessionId, userId } = getGameBidParams;
+    const where: Prisma.BidWhereUniqueInput = { id };
+
+    if (userId) {
+      where.gameSessionId_userId = {
+        gameSessionId,
+        userId,
+      };
+    }
+
+    return await this.prismaService.bid.findUniqueOrThrow({ where });
   }
 }

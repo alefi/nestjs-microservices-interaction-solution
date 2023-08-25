@@ -6,6 +6,7 @@ export class GameBidDto implements GameServiceV1.GameBidDto, ITimestampsMeta<str
   readonly id: string;
   readonly gameSessionId: string;
   readonly walletEntryId: string;
+  readonly userId: string;
   readonly valueHash: string; // Don't expose this to a client.
   readonly status: string;
   readonly createdAt: string;

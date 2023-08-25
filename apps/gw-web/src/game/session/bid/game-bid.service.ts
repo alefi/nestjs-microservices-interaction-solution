@@ -13,4 +13,9 @@ export class GameBidService {
     this.logger.debug('Sending request with payload:', JSON.stringify(applyBidParams));
     return await firstValueFrom(this.gameServiceClientService.applyBid(applyBidParams));
   }
+
+  async getGameBidById(getGameBidParams: GameServiceV1.GetGameBidParamsDto): Promise<GameServiceV1.GameBidDto> {
+    this.logger.debug('Sending request with payload:', JSON.stringify(getGameBidParams));
+    return await firstValueFrom(this.gameServiceClientService.getGameBidById(getGameBidParams));
+  }
 }

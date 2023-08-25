@@ -13,4 +13,10 @@ export class GameBidGrpcController {
     const bid = await this.gameBidService.applyBid(applyBidParams);
     return GameBidDto.fromModel(bid);
   }
+
+  @GrpcMethod('GameService')
+  async getGameBidById(getGameBidParams: GameServiceV1.GetGameBidParamsDto): Promise<GameServiceV1.GameBidDto> {
+    const bid = await this.gameBidService.get(getGameBidParams);
+    return GameBidDto.fromModel(bid);
+  }
 }

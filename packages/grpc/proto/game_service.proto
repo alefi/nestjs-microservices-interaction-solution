@@ -10,6 +10,7 @@ service GameService {
   rpc ApplyBid(ApplyBidParamsDto) returns (GameBidDto) {}
   rpc BeginGameEvent(BeginGameEventParamsDto) returns (GameEventDto) {}
   rpc EndGameEvent(EndGameEventParamsDto) returns (GameEventDto) {}
+  rpc GetGameBidById(GetGameBidParamsDto) returns (GameBidDto) {}
   rpc GetGameEventById(GetGameEventParamsDto) returns (GameEventDto) {}
   rpc GetGameSessionById(GetGameSessionParamsDto) returns (GameSessionDto) {}
   rpc ListGameEvents(ListGameEventsParamsDto) returns (ListGameEventsDto) {}
@@ -47,10 +48,11 @@ message GameBidDto {
   string id = 1;
   string game_session_id = 2;
   string wallet_entry_id = 3;
-  string value_hash = 4; // Don't expose this to a client.
-  string status = 5;
-  string created_at = 6;
-  string updated_at = 7;
+  string user_id = 4;
+  string value_hash = 5; // Don't expose this to a client.
+  string status = 6;
+  string created_at = 7;
+  string updated_at = 8;
 }
 
 message GameEventDto {
@@ -89,6 +91,12 @@ message GameSessionDto {
   optional string winning_hash = 6;
   string created_at = 7;
   string updated_at = 8;
+}
+
+message GetGameBidParamsDto {
+  string id = 1;
+  string game_session_id = 2;
+  optional string user_id = 3;
 }
 
 message GetGameEventParamsDto {

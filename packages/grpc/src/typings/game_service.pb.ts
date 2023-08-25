@@ -37,6 +37,7 @@ export interface GameBidDto {
   id: string;
   gameSessionId: string;
   walletEntryId: string;
+  userId: string;
   /** Don't expose this to a client. */
   valueHash: string;
   status: string;
@@ -80,6 +81,12 @@ export interface GameSessionDto {
   winningHash?: string | undefined;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface GetGameBidParamsDto {
+  id: string;
+  gameSessionId: string;
+  userId?: string | undefined;
 }
 
 export interface GetGameEventParamsDto {
@@ -140,6 +147,8 @@ export interface GameServiceClient {
 
   endGameEvent(request: EndGameEventParamsDto, metadata?: Metadata): Observable<GameEventDto>;
 
+  getGameBidById(request: GetGameBidParamsDto, metadata?: Metadata): Observable<GameBidDto>;
+
   getGameEventById(request: GetGameEventParamsDto, metadata?: Metadata): Observable<GameEventDto>;
 
   getGameSessionById(request: GetGameSessionParamsDto, metadata?: Metadata): Observable<GameSessionDto>;
@@ -163,6 +172,11 @@ export interface GameServiceController {
     request: EndGameEventParamsDto,
     metadata?: Metadata,
   ): Promise<GameEventDto> | Observable<GameEventDto> | GameEventDto;
+
+  getGameBidById(
+    request: GetGameBidParamsDto,
+    metadata?: Metadata,
+  ): Promise<GameBidDto> | Observable<GameBidDto> | GameBidDto;
 
   getGameEventById(
     request: GetGameEventParamsDto,
@@ -196,6 +210,7 @@ export function GameServiceControllerMethods() {
       "applyBid",
       "beginGameEvent",
       "endGameEvent",
+      "getGameBidById",
       "getGameEventById",
       "getGameSessionById",
       "listGameEvents",

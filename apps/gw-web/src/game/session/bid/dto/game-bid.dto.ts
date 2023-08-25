@@ -25,6 +25,12 @@ export class GameBidDto
   readonly walletEntryId: string;
 
   @ApiProperty({
+    description: 'A user that had made the bid.',
+    format: 'uuid',
+  })
+  readonly userId: string;
+
+  @ApiProperty({
     description: 'The bid status in a moment',
     enum: ['pending', 'success', 'failed'],
     example: 'pending',

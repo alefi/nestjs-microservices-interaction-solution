@@ -73,6 +73,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
+  bids           Bid[]           @relation("BidUser")
   walletAccounts WalletAccount[] @relation("WalletAccountUser")
 
   // Prisma doesn't support partial indexes at all, it impossible to add it by hands
@@ -168,6 +169,9 @@ model Bid {
   gameSession   GameSession @relation("BidGameSession", fields: [gameSessionId], references: [id])
   gameSessionId String      @map("game_session_id") @db.Uuid
 
+  user   User   @relation("BidUser", fields: [userId], references: [id])
+  userId String @map("user_id") @db.Uuid
+
   walletEntry   WalletEntry @relation("BidWalletEntry", fields: [walletEntryId], references: [id])
   walletEntryId String      @map("wallet_entry_id") @db.Uuid
 
@@ -177,6 +181,7 @@ model Bid {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
+  @@unique([gameSessionId, userId])
   @@index([valueHash, status])
   @@map("bids")
   @@schema("gaming")
