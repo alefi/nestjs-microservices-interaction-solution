@@ -8,9 +8,6 @@ import { protoBufModulesPath } from './protobuf-modules-path.constants';
 export const walletServiceGrpcServerOptions: GrpcOptions = {
   transport: Transport.GRPC,
   options: {
-    channelOptions: {
-      grpc_arg_enable_channelz: 0,
-    },
     package: [WalletServiceV1.WALLET_SERVICE_V1_PACKAGE_NAME],
     protoPath: path.join(protoBufModulesPath, 'wallet_service.proto'),
     loader: {
