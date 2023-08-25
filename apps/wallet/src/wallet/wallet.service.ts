@@ -9,10 +9,10 @@ import { type WalletServiceV1 } from '@lib/grpc';
 export class WalletService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async authoriseFunds(authorizeFundsParams: WalletServiceV1.AuthoriseFundsParamsDto) {
+  async authoriseFunds(authoriseFundsParams: WalletServiceV1.AuthoriseFundsParamsDto) {
     return await this.prismaService.$transaction(
       async client => {
-        const { currencyAmount, reference, userId } = authorizeFundsParams;
+        const { currencyAmount, reference, userId } = authoriseFundsParams;
         const where: Prisma.WalletAccountWhereUniqueInput = {
           userId_currency: {
             currency: currencyAmount.currency as Currency,
@@ -20,8 +20,8 @@ export class WalletService {
           },
         };
 
-        if (authorizeFundsParams.walletAccountId) {
-          where.id = authorizeFundsParams.walletAccountId;
+        if (authoriseFundsParams.walletAccountId) {
+          where.id = authoriseFundsParams.walletAccountId;
         }
 
         // TODO: Replace ..OrThrow ending method to general and check results on each step
