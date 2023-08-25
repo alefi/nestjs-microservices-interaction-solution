@@ -49,6 +49,7 @@ This code is provided as a PoC and it could be improved. For instance:
 - use some accounting library for financial operations
 - get rid of DRY principle violation in several places on codebase
 - return null for optional properties within some DTOs
+- consider to use BullMQ's flows
 - use [Temporal](https://temporal.io) for a process orchestration
 
 ## Techniques

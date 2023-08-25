@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { type Job } from 'bullmq';
 import { match } from 'ts-pattern';
 
+import type { GameEvent } from '@prisma/client';
 import { IBeginGameEventParams, IBeginGameSessionParams, IEndGameEventParams, JobName, QueueName } from '@lib/queue';
 import { GameEventsPublisherService, GameSessionsPublisherService } from '../../queue';
 import { GameEventService } from './game-event.service';
@@ -23,25 +24,29 @@ export class GameEventsQueueProcessorService extends WorkerHost {
   async process(job: Job, token?: string) {
     this.logger.debug(`Received job ${JSON.stringify(job)} with token ${token}`);
 
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     const jobHandler = match(job.name)
-      /* eslint-disable @typescript-eslint/unbound-method */
-      .with(JobName.BeginGameEvent, () => this.onGameEventBegin)
-      .with(JobName.EndGameEvent, () => this.onGameEventEnd)
-      /* eslint-enable @typescript-eslint/unbound-method */
+      /* eslint-disable @typescript-eslint/no-unsafe-return */
+      .with(JobName.BeginGameEvent, () => this.onGameEventBegin.bind(this))
+      .with(JobName.EndGameEvent, () => this.onGameEventEnd.bind(this))
+      /* eslint-enable @typescript-eslint/no-unsafe-return */
       .otherwise(() => {
         throw new Error(`Wrong routing for ${job.name}, check target queue`);
       });
+    /* eslint-enable @typescript-eslint/no-unsafe-assignment */
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
     return await jobHandler(job);
   }
 
-  async onGameEventBegin(job: Job<IBeginGameEventParams>) {
+  async onGameEventBegin(job: Job<IBeginGameEventParams>): Promise<GameEvent> {
     const gameEvent = await this.gameEventService.get({
       id: job.data.id,
       gameId: job.data.gameId,
     });
 
     if (gameEvent.isCancelled || gameEvent.isFinished) {
+      // TODO Map errors to reach the goal of error understandability on the gateway side.
       throw new Error('The game event has illegal status');
     }
 
@@ -60,13 +65,15 @@ export class GameEventsQueueProcessorService extends WorkerHost {
 
     // Schedule the game event end moment.
     // It is no need to stop children sessions because of these sessions will stop automatically.
-    return await this.gameEventsPublisherService.publish(JobName.EndGameEvent, <IEndGameEventParams>{
+    await this.gameEventsPublisherService.publish(JobName.EndGameEvent, <IEndGameEventParams>{
       id,
       isCancelled: false,
     });
+
+    return gameEvent;
   }
 
-  async onGameEventEnd(job: Job<IEndGameEventParams>) {
+  async onGameEventEnd(job: Job<IEndGameEventParams>): Promise<GameEvent> {
     // TODO wrap into Tx
     const gameEvent = await this.gameEventService.markGameEventAsFinished(job.data);
     // TODO remove pending jobs

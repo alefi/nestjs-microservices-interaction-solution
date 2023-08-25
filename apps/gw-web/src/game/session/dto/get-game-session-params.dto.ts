@@ -12,6 +12,10 @@ export class GetGameSessionParamsDto
 {
   @Transform(({ value }) => String(value).toLowerCase())
   @IsUUID()
+  declare readonly gameId: string;
+
+  @Transform(({ value }) => String(value).toLowerCase())
+  @IsUUID()
   readonly gameEventId: string;
 
   declare readonly id: string;

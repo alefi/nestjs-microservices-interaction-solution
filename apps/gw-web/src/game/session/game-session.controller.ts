@@ -6,14 +6,17 @@ import { GameSessionService } from './game-session.service';
 import { ListGameSessionsParamsDto } from '@lib/grpc/src/typings/game_service.pb';
 
 @ApiTags('games')
-@Controller('/v1/game/:gameId/session')
+@Controller('/v1/game/:gameId/event/:gameEventId/session')
 export class GameSessionController {
   constructor(private readonly gameSessionService: GameSessionService) {}
 
   @ApiOperation({ summary: 'Retrieve the game session by id' })
   @Get(':id')
   async getGameSessionById(@Param() getGameSessionParams: GetGameSessionParamsDto): Promise<GameSessionDto> {
-    const gameSession = await this.gameSessionService.getGameSessionById(getGameSessionParams);
+    const gameSession = await this.gameSessionService.getGameSessionById({
+      gameEventId: getGameSessionParams.gameEventId,
+      id: getGameSessionParams.id,
+    });
     return GameSessionDto.create(gameSession);
   }
 
