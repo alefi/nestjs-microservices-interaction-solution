@@ -15,6 +15,7 @@
   "dependencies": {
     "@lib/db": "0.0.1",
     "@lib/grpc": "0.0.1",
+    "@lib/queue": "0.0.1",
     "@lib/utils": "0.0.1",
     "@prisma/client": "5.2.0",
     "eslint-config-custom": "*",
