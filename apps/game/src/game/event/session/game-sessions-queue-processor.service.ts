@@ -41,6 +41,7 @@ export class GameSessionsQueueProcessorService extends WorkerHost {
   }
 
   async onGameSessionEnd(job: Job<IEndGameSessionParams>): Promise<GameSession> {
+    // Note: For this project, only one game session per game event is being created. No repeatable jobs, etc.
     return await this.gameSessionService.endGameSession(job.data);
   }
 }

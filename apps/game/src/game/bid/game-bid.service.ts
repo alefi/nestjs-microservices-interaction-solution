@@ -5,7 +5,8 @@ import { match } from 'ts-pattern';
 import { type Bid, WalletEntryState, Prisma, Status } from '@prisma/client';
 import { PrismaErrorCode, PrismaService } from '@lib/db';
 import { WalletServiceClientService, type GameServiceV1, WalletServiceV1 } from '@lib/grpc';
-import { buildUrn } from '@lib/utils';
+import { buildUrn, hashValue } from '@lib/utils';
+import { checkGameBidConstraints } from './helpers';
 
 @Injectable()
 export class GameBidService {
@@ -16,16 +17,23 @@ export class GameBidService {
 
   // Note: This method is idempotent by design. It is disallowed to change bid or create several bids on single game session.
   async applyBid(applyBidParams: GameServiceV1.ApplyBidParamsDto): Promise<Bid> {
+    checkGameBidConstraints(applyBidParams);
+
     // TODO Try to split this long method
     return await this.prismaService.$transaction(
       async client => {
         const { currencyAmount, gameSessionId, userId } = applyBidParams;
-        const gameSession = await client.gameSession.findUniqueOrThrow({
+        const gameSession = await client.gameSession.findUnique({
           where: {
             id: gameSessionId,
             isFinished: false,
           },
         });
+
+        // TODO Handle errors carefully, map them into business exceptions
+        if (!gameSession) {
+          throw new Error(`No active game session found for id ${gameSessionId}`);
+        }
 
         // TODO Check game session's constraint, e.g., if it already has finished
 
@@ -54,8 +62,7 @@ export class GameBidService {
               gameSessionId,
               walletEntryId,
               userId,
-              // TODO make a real hash generator function
-              valueHash: 'hashed_value',
+              valueHash: hashValue(applyBidParams.value, gameSessionId),
               status: Status.success,
             },
           });

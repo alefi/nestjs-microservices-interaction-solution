@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JobsOptions } from 'bullmq';
 
 import { type GameSession, Prisma } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { type GameServiceV1 } from '@lib/grpc';
 import { IBeginGameSessionParams, IEndGameSessionParams, JobName } from '@lib/queue';
+import { dateTime, hashValue } from '@lib/utils';
 import { GameSessionsPublisherService } from '../../../queue';
 import { calculateDelayByFutureTimestamp } from '../helpers';
-import { dateTime } from '@lib/utils';
+import { IGameSessionActionResult } from './typings';
 
 @Injectable()
 export class GameSessionService {
+  private logger = new Logger(GameSessionService.name, { timestamp: true });
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly gameSessionsPublisherService: GameSessionsPublisherService,
@@ -41,7 +44,9 @@ export class GameSessionService {
   }
 
   async endGameSession(endGameSessionParams: IEndGameSessionParams): Promise<GameSession> {
-    const gameSession = await this.markGameSessionAsFinished(endGameSessionParams);
+    const gameActionResult = this.performAction(endGameSessionParams.id);
+    const gameSession = await this.markGameSessionAsFinished(endGameSessionParams, gameActionResult);
+    this.processTribute(gameSession);
     return gameSession;
   }
 
@@ -72,13 +77,11 @@ export class GameSessionService {
     return [items, total];
   }
 
-  async markGameSessionAsFinished(
-    data: Pick<GameSession, 'id'>,
-    client: Prisma.TransactionClient = this.prismaService,
-  ) {
-    return await client.gameSession.update({
+  async markGameSessionAsFinished(data: IEndGameSessionParams, sessionResultData: IGameSessionActionResult) {
+    return await this.prismaService.gameSession.update({
       data: {
         ...data,
+        ...sessionResultData,
         isFinished: true,
       },
       where: {
@@ -86,5 +89,35 @@ export class GameSessionService {
         isFinished: false,
       },
     });
+  }
+
+  // Note: This action is hardcoded for a specific game we using for this demo.
+  // This method shouldn't be a part of this service at all.
+  private performAction(sessionId: string): IGameSessionActionResult {
+    /**
+     * The maximum is inclusive and the minimum is inclusive.
+     */
+    const getRandomIntInclusive = (min: number, max: number) => {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+
+    const winningValue = getRandomIntInclusive(1, 3);
+    const winningHash = hashValue(winningValue.toString(), sessionId);
+
+    return { winningHash };
+  }
+
+  /**
+   * This method should process tribute of game session according a specific game rules.
+   * Since we haven't got any rules here in the project, this mechanics is not implemented.
+   */
+  private processTribute(gameSession: GameSession) {
+    const { id, winningHash } = gameSession;
+    // Only log these arguments for now.
+    this.logger.log(`Game session ${id} has finished, winning hash is ${winningHash}`);
+    // TODO Create queue for processing game session
   }
 }

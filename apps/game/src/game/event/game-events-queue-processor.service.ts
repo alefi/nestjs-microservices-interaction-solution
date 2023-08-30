@@ -1,12 +1,13 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable, Logger } from '@nestjs/common';
-import { type Job } from 'bullmq';
+import type { JobsOptions, Job } from 'bullmq';
 import { match } from 'ts-pattern';
 
 import type { GameEvent } from '@prisma/client';
 import { IBeginGameEventParams, IBeginGameSessionParams, IEndGameEventParams, JobName, QueueName } from '@lib/queue';
 import { GameEventsPublisherService, GameSessionsPublisherService } from '../../queue';
 import { GameEventService } from './game-event.service';
+import { calculateDelayByFutureTimestamp } from './helpers';
 
 @Injectable()
 @Processor(QueueName.GameEvents)
@@ -52,7 +53,7 @@ export class GameEventsQueueProcessorService extends WorkerHost {
 
     // TODO Check other conditions
 
-    const { id, sessionsCountLimit, sessionDurationSeconds, simultaneousSessionsCount } = job.data;
+    const { id, finishAt, sessionsCountLimit, sessionDurationSeconds, simultaneousSessionsCount } = job.data;
 
     for (let sessionCount = 1; sessionCount <= simultaneousSessionsCount; sessionCount++) {
       const payload: IBeginGameSessionParams = {
@@ -65,10 +66,12 @@ export class GameEventsQueueProcessorService extends WorkerHost {
 
     // Schedule the game event end moment.
     // It is no need to stop children sessions because of these sessions will stop automatically.
-    await this.gameEventsPublisherService.publish(JobName.EndGameEvent, <IEndGameEventParams>{
+    const payload: IEndGameEventParams = {
       id,
       isCancelled: false,
-    });
+    };
+    const options: JobsOptions = { delay: calculateDelayByFutureTimestamp(finishAt) };
+    await this.gameEventsPublisherService.publish(JobName.EndGameEvent, payload, options);
 
     return gameEvent;
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JobsOptions } from 'bullmq';
+import { type JobsOptions } from 'bullmq';
 
 import { type GameEvent, Prisma } from '@prisma/client';
 import { PrismaService } from '@lib/db';
