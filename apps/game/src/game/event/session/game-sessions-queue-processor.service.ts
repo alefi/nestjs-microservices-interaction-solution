@@ -23,7 +23,7 @@ export class GameSessionsQueueProcessorService extends WorkerHost {
     const jobHandler = match(job.name)
       /* eslint-disable @typescript-eslint/no-unsafe-return */
       .with(JobName.BeginGameSession, () => this.onGameSessionBegin.bind(this))
-      .with(JobName.EndGameEvent, () => this.onGameSessionEnd.bind(this))
+      .with(JobName.EndGameSession, () => this.onGameSessionEnd.bind(this))
       /* eslint-enable @typescript-eslint/no-unsafe-return */
       .otherwise(() => {
         throw new Error(`Wrong routing for ${job.name}, check target queue`);
