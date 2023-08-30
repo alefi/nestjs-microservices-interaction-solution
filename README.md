@@ -47,6 +47,8 @@ This code is provided as a PoC and it could be improved. For instance:
 - add tests for real business cases
 - better exception handling, including creation of business level exceptions and map them on appropriated layers
 - use some accounting library for financial operations
+- replace startAt along with finishAt to Postgres' range, add index to it, utilitize @lib/utils/data-time helper to build ranges within the codebase
+- separate final game action instant from finishAt marker, do it slightly earlier
 - turn each of gRpc methods which change state to idempotent methods
 - add some correlation property (e.g. transactionId) and append it to each of message involve in a financial flow (or even to each at all)
 - get rid of DRY principle violation in several places on codebase
