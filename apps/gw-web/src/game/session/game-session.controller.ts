@@ -1,9 +1,8 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { GameSessionDto, GetGameSessionParamsDto, ListGameSessionsDto } from './dto';
+import { GameSessionDto, GetGameSessionParamsDto, ListGameSessionsDto, ListGameSessionsParamsDto } from './dto';
 import { GameSessionService } from './game-session.service';
-import { ListGameSessionsParamsDto } from '@lib/grpc/src/typings/game_service.pb';
 
 @ApiTags('games')
 @Controller('/v1/game/:gameId/event/:gameEventId/session')

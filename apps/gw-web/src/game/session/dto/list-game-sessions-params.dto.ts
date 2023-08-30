@@ -5,7 +5,7 @@ import { Transform } from 'class-transformer';
 import { type GameServiceV1 } from '@lib/grpc';
 import { GameSessionDto } from './game-session.dto';
 
-export class ListGameEventsParamsDto
+export class ListGameSessionsParamsDto
   extends PartialType(PickType(GameSessionDto, ['gameEventId', 'isFinished']))
   implements Pick<GameServiceV1.ListGameSessionsParamsDto, 'isFinished'>
 {
