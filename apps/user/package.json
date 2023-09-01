@@ -18,7 +18,7 @@
     "@lib/utils": "0.0.1",
     "@prisma/client": "5.2.0",
     "eslint-config-custom": "*",
-    "zod": "3.22.1"
+    "zod": "3.22.2"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.1",

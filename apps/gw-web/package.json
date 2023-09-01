@@ -19,7 +19,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
     "eslint-config-custom": "*",
-    "zod": "3.22.1"
+    "zod": "3.22.2"
   },
   "devDependencies": {
     "@nestjs/testing": "10.2.0",

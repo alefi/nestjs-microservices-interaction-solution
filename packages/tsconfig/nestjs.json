@@ -4,6 +4,7 @@
   "display": "NestJs",
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "Node",
     "target": "ES2022",
     "lib": ["es2022"],
     "noEmit": false,
