@@ -185,6 +185,16 @@ export class GameBidService {
     return await this.processBid(processGameBidParams, 'releaseFunds');
   }
 
+  private async markBidAsProcessed(id: string, status: Status) {
+    return await this.prismaService.bid.update({
+      data: { status },
+      where: {
+        id,
+        status: Status.pending,
+      },
+    });
+  }
+
   private async processBid(
     processGameBidParams: IProcessGameBidParams,
     gRpcMethodName: 'commitFunds' | 'releaseFunds',
@@ -195,15 +205,5 @@ export class GameBidService {
     );
 
     return await this.markBidAsProcessed(id, status as Status);
-  }
-
-  private async markBidAsProcessed(id: string, status: Status) {
-    return await this.prismaService.bid.update({
-      data: { status },
-      where: {
-        id,
-        status: Status.pending,
-      },
-    });
   }
 }
