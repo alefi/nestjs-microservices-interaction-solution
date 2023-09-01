@@ -1,22 +1,20 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { JobsOptions } from 'bullmq';
+import { Injectable } from '@nestjs/common';
+import type { JobsOptions } from 'bullmq';
 
 import { type GameSession, Prisma } from '@prisma/client';
 import { PrismaService } from '@lib/db';
 import { type GameServiceV1 } from '@lib/grpc';
-import { IBeginGameSessionParams, IEndGameSessionParams, JobName } from '@lib/queue';
+import { IBeginGameSessionParams, IEndGameSessionParams, IProcessGameBidsParams, JobName, QueueName } from '@lib/queue';
 import { dateTime, hashValue } from '@lib/utils';
-import { GameSessionsPublisherService } from '../../../queue';
+import { GameBidsPublisherService } from '../../../queue';
 import { calculateDelayByFutureTimestamp } from '../helpers';
 import { IGameSessionActionResult } from './typings';
 
 @Injectable()
 export class GameSessionService {
-  private logger = new Logger(GameSessionService.name, { timestamp: true });
-
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly gameSessionsPublisherService: GameSessionsPublisherService,
+    private readonly gameBidsPublisherService: GameBidsPublisherService,
   ) {}
 
   async beginGameSession(beginGameSessionParams: IBeginGameSessionParams): Promise<GameSession> {
@@ -34,20 +32,29 @@ export class GameSessionService {
         },
       });
 
-      const payload: IEndGameSessionParams = { id: gameSession.id };
-      const options: JobsOptions = { delay: calculateDelayByFutureTimestamp(gameSessionFinishAt) };
-      // Schedule the game session end moment.
+      const opts: JobsOptions = { delay: calculateDelayByFutureTimestamp(gameSessionFinishAt) };
+      // Schedule the game session end moment and further game tribute processing as well.
       // It is no need to stop children sessions because of these sessions will stop automatically.
-      await this.gameSessionsPublisherService.publish(JobName.EndGameSession, payload, options);
+      await this.gameBidsPublisherService.publishFlow(
+        JobName.ProcessGameBids,
+        <IProcessGameBidsParams>{ gameSessionId: gameSession.id },
+        [
+          {
+            name: JobName.EndGameSession,
+            data: <IEndGameSessionParams>{ id: gameSession.id },
+            queueName: QueueName.GameSessions,
+            opts,
+          },
+        ],
+      );
+
       return gameSession;
     });
   }
 
   async endGameSession(endGameSessionParams: IEndGameSessionParams): Promise<GameSession> {
-    const gameActionResult = this.performAction(endGameSessionParams.id);
-    const gameSession = await this.markGameSessionAsFinished(endGameSessionParams, gameActionResult);
-    this.processTribute(gameSession);
-    return gameSession;
+    const gameSessionResult = this.performAction(endGameSessionParams.id);
+    return await this.markGameSessionAsFinished(endGameSessionParams, gameSessionResult);
   }
 
   async get(getGameSessionParams: GameServiceV1.GetGameSessionParamsDto): Promise<GameSession> {
@@ -108,16 +115,5 @@ export class GameSessionService {
     const winningHash = hashValue(winningValue.toString(), sessionId);
 
     return { winningHash };
-  }
-
-  /**
-   * This method should process tribute of game session according a specific game rules.
-   * Since we haven't got any rules here in the project, this mechanics is not implemented.
-   */
-  private processTribute(gameSession: GameSession) {
-    const { id, winningHash } = gameSession;
-    // Only log these arguments for now.
-    this.logger.log(`Game session ${id} has finished, winning hash is ${winningHash}`);
-    // TODO Create queue for processing game session
   }
 }

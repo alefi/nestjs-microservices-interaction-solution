@@ -99,10 +99,22 @@ export interface GetGameSessionParamsDto {
   gameEventId: string;
 }
 
+export interface ListGameBidsDto {
+  /** If items is empty, only total would be passed */
+  items: GameBidDto[];
+  total: number;
+}
+
 export interface ListGameEventsDto {
   /** If items is empty, only total would be passed */
   items: GameEventDto[];
   total: number;
+}
+
+export interface ListGameBidsParamsDto {
+  gameSessionId: string;
+  valueHash?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface ListGameEventsParamsDto {
@@ -153,6 +165,8 @@ export interface GameServiceClient {
 
   getGameSessionById(request: GetGameSessionParamsDto, metadata?: Metadata): Observable<GameSessionDto>;
 
+  listGameBids(request: ListGameBidsParamsDto, metadata?: Metadata): Observable<ListGameBidsDto>;
+
   listGameEvents(request: ListGameEventsParamsDto, metadata?: Metadata): Observable<ListGameEventsDto>;
 
   listGameSessions(request: ListGameSessionsParamsDto, metadata?: Metadata): Observable<ListGameSessionsDto>;
@@ -188,6 +202,11 @@ export interface GameServiceController {
     metadata?: Metadata,
   ): Promise<GameSessionDto> | Observable<GameSessionDto> | GameSessionDto;
 
+  listGameBids(
+    request: ListGameBidsParamsDto,
+    metadata?: Metadata,
+  ): Promise<ListGameBidsDto> | Observable<ListGameBidsDto> | ListGameBidsDto;
+
   listGameEvents(
     request: ListGameEventsParamsDto,
     metadata?: Metadata,
@@ -213,6 +232,7 @@ export function GameServiceControllerMethods() {
       "getGameBidById",
       "getGameEventById",
       "getGameSessionById",
+      "listGameBids",
       "listGameEvents",
       "listGameSessions",
       "listGames",

@@ -53,7 +53,6 @@ This code is provided as a PoC and it could be improved. For instance:
 - add some correlation property (e.g. transactionId) and append it to each of message involve in a financial flow (or even to each at all)
 - get rid of DRY principle violation in several places on codebase
 - return null for optional properties within some DTOs
-- consider to use BullMQ's flows
 - use [Temporal](https://temporal.io) for a process orchestration
 
 ## Techniques

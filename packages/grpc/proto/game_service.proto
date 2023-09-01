@@ -13,6 +13,7 @@ service GameService {
   rpc GetGameBidById(GetGameBidParamsDto) returns (GameBidDto) {}
   rpc GetGameEventById(GetGameEventParamsDto) returns (GameEventDto) {}
   rpc GetGameSessionById(GetGameSessionParamsDto) returns (GameSessionDto) {}
+  rpc ListGameBids(ListGameBidsParamsDto) returns (ListGameBidsDto) {}
   rpc ListGameEvents(ListGameEventsParamsDto) returns (ListGameEventsDto) {}
   rpc ListGameSessions(ListGameSessionsParamsDto) returns (ListGameSessionsDto) {}
   rpc ListGames(ListGamesParamsDto) returns (ListGamesDto) {}
@@ -109,10 +110,22 @@ message GetGameSessionParamsDto {
   string game_event_id = 2;
 }
 
+message ListGameBidsDto {
+  // If items is empty, only total would be passed
+  repeated GameBidDto items = 1;
+  int32 total = 2;
+}
+
 message ListGameEventsDto {
   // If items is empty, only total would be passed
   repeated GameEventDto items = 1;
   int32 total = 2;
+}
+
+message ListGameBidsParamsDto {
+  string game_session_id = 1;
+  optional string value_hash = 2;
+  optional string status = 3;
 }
 
 message ListGameEventsParamsDto {

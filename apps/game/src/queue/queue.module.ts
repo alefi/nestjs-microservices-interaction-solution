@@ -10,7 +10,13 @@ import { GameEventsPublisherService } from './game-events-publisher.service';
  * Note: Please don't forget it is a PoC project :)
  */
 @Module({
-  imports: [BullModule.registerQueue({ name: QueueName.GameEvents }, { name: QueueName.GameSessions })],
+  imports: [
+    BullModule.registerQueue(
+      { name: QueueName.GameBids },
+      { name: QueueName.GameEvents },
+      { name: QueueName.GameSessions },
+    ),
+  ],
   providers: [GameEventsPublisherService, GameSessionsPublisherService],
   exports: [GameEventsPublisherService, GameSessionsPublisherService],
 })
