@@ -174,12 +174,7 @@ export class GameBidService {
    * In terms of this project, we should add a new wallet entry with a confirmed state.
    */
   async processLosingBid(processGameBidParams: IProcessGameBidParams) {
-    const { id, walletEntryId } = processGameBidParams;
-    const { status = Status.failure } = await firstValueFrom(
-      this.walletServiceClientService.commitFunds({ walletEntryId }),
-    );
-
-    return await this.markBidAsProcessed(id, status as Status);
+    return await this.processBid(processGameBidParams, 'commitFunds');
   }
 
   /**
@@ -187,9 +182,16 @@ export class GameBidService {
    * It means we would remove a wallet entry having a reserved state.
    */
   async processWinningBid(processGameBidParams: IProcessGameBidParams) {
+    return await this.processBid(processGameBidParams, 'releaseFunds');
+  }
+
+  private async processBid(
+    processGameBidParams: IProcessGameBidParams,
+    gRpcMethodName: 'commitFunds' | 'releaseFunds',
+  ) {
     const { id, walletEntryId } = processGameBidParams;
     const { status = Status.failure } = await firstValueFrom(
-      this.walletServiceClientService.releaseFunds({ walletEntryId }),
+      this.walletServiceClientService[gRpcMethodName]({ walletEntryId }),
     );
 
     return await this.markBidAsProcessed(id, status as Status);
