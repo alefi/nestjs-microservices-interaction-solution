@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { QueueName } from '@lib/queue';
 import { GameSessionsPublisherService } from './game-sessions-publisher.service';
 import { GameEventsPublisherService } from './game-events-publisher.service';
+import { GameBidsPublisherService } from '.';
 
 /**
  * @description For a development velocity reason, we bound this entire module to a couple of queue.
@@ -17,7 +18,7 @@ import { GameEventsPublisherService } from './game-events-publisher.service';
       { name: QueueName.GameSessions },
     ),
   ],
-  providers: [GameEventsPublisherService, GameSessionsPublisherService],
-  exports: [GameEventsPublisherService, GameSessionsPublisherService],
+  providers: [GameBidsPublisherService, GameEventsPublisherService, GameSessionsPublisherService],
+  exports: [GameBidsPublisherService, GameEventsPublisherService, GameSessionsPublisherService],
 })
 export class QueueModule {}

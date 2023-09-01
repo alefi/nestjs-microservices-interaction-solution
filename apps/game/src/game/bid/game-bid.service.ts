@@ -1,17 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { match } from 'ts-pattern';
 
 import { type Bid, WalletEntryState, Prisma, Status } from '@prisma/client';
 import { PrismaErrorCode, PrismaService } from '@lib/db';
 import { WalletServiceClientService, type GameServiceV1, WalletServiceV1 } from '@lib/grpc';
+import { IProcessGameBidParams, IProcessGameBidsParams, JobName } from '@lib/queue';
 import { buildUrn, hashValue } from '@lib/utils';
 import { checkGameBidConstraints } from './helpers';
+import { GameBidsPublisherService } from '../../queue';
+import { IGameSessionActionResult } from '../event/session/typings';
 
 @Injectable()
 export class GameBidService {
+  private readonly logger = new Logger(GameBidService.name, { timestamp: true });
+
   constructor(
     private readonly prismaService: PrismaService,
+    private readonly gameBidsPublisherService: GameBidsPublisherService,
     private readonly walletServiceClientService: WalletServiceClientService,
   ) {}
 
@@ -63,7 +69,6 @@ export class GameBidService {
               walletEntryId,
               userId,
               valueHash: hashValue(applyBidParams.value, gameSessionId),
-              status: Status.success,
             },
           });
           return gameBid;
@@ -110,5 +115,93 @@ export class GameBidService {
     }
 
     return await this.prismaService.bid.findUniqueOrThrow({ where });
+  }
+
+  async listGameBids(
+    listGameBidsParams: GameServiceV1.ListGameBidsParamsDto,
+    select?: Prisma.BidSelect,
+  ): Promise<[Bid[], number]> {
+    const { gameSessionId } = listGameBidsParams;
+    const where: Prisma.BidWhereInput = { gameSessionId };
+
+    if (listGameBidsParams.valueHash) {
+      where.valueHash = listGameBidsParams.valueHash;
+    }
+
+    const whereWithoutStatusFiltering = { ...where };
+
+    if (listGameBidsParams.status) {
+      where.status = listGameBidsParams.status as Status;
+    }
+
+    const bidFindManyArgs: Prisma.BidFindManyArgs = { where };
+
+    if (select) {
+      bidFindManyArgs.select = select;
+    }
+
+    const [items, total] = await Promise.all([
+      this.prismaService.bid.findMany(bidFindManyArgs),
+      this.prismaService.bid.count({ where: { ...whereWithoutStatusFiltering } }),
+    ]);
+
+    return [items, total];
+  }
+
+  async processBids(processGameBidsParams: IProcessGameBidsParams, gameSessionActionResult: IGameSessionActionResult) {
+    const { gameSessionId } = processGameBidsParams;
+    const { winningHash } = gameSessionActionResult;
+    this.logger.debug(`Game session ${gameSessionId} has finished, winning hash is ${winningHash}`);
+
+    const [gameBids] = await this.listGameBids(
+      { gameSessionId, status: Status.pending },
+      { id: true, valueHash: true, walletEntryId: true },
+    );
+
+    const jobs = gameBids.map(({ id, valueHash, walletEntryId }) => ({
+      data: <IProcessGameBidParams>{
+        id,
+        walletEntryId,
+      },
+      name: valueHash === winningHash ? JobName.ProcessWinningGameBid : JobName.ProcessLosingGameBid,
+    }));
+
+    return await this.gameBidsPublisherService.bulk(jobs);
+  }
+
+  /**
+   * If a bid has lost, we should only gain locked funds on the user's wallet.
+   * In terms of this project, we should add a new wallet entry with a confirmed state.
+   */
+  async processLosingBid(processGameBidParams: IProcessGameBidParams) {
+    const { id, walletEntryId } = processGameBidParams;
+    const { status = Status.failure } = await firstValueFrom(
+      this.walletServiceClientService.commitFunds({ walletEntryId }),
+    );
+
+    return await this.markBidAsProcessed(id, status as Status);
+  }
+
+  /**
+   * If the bid has won, we should only release locked funds on the user's wallet.
+   * It means we would remove a wallet entry having a reserved state.
+   */
+  async processWinningBid(processGameBidParams: IProcessGameBidParams) {
+    const { id, walletEntryId } = processGameBidParams;
+    const { status = Status.failure } = await firstValueFrom(
+      this.walletServiceClientService.releaseFunds({ walletEntryId }),
+    );
+
+    return await this.markBidAsProcessed(id, status as Status);
+  }
+
+  private async markBidAsProcessed(id: string, status: Status) {
+    return await this.prismaService.bid.update({
+      data: { status },
+      where: {
+        id,
+        status: Status.pending,
+      },
+    });
   }
 }
