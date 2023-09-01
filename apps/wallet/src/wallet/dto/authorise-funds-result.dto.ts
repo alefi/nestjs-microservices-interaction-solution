@@ -1,5 +1,6 @@
 import { WalletEntry } from '@prisma/client';
 import { WalletServiceV1 } from '@lib/grpc';
+
 import { WalletEntryDto } from './wallet-entry.dto';
 
 export class AuthoriseFundsResultDto implements WalletServiceV1.AuthoriseFundsResultDto {

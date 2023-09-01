@@ -71,6 +71,35 @@ export class WalletService {
     );
   }
 
+  async commitFunds(commitFundsParams: WalletServiceV1.CommitFundsParamsDto) {
+    return this.prismaService.$transaction(
+      async client => {
+        const sourceEntry = await client.walletEntry.findUniqueOrThrow({
+          where: { id: commitFundsParams.walletEntryId },
+        });
+        const walletEntry = await client.walletEntry.create({
+          data: {
+            walletAccount: {
+              connect: {
+                id: sourceEntry.walletAccountId,
+              },
+            },
+            reference: sourceEntry.reference,
+            amount: sourceEntry.amount,
+            state: WalletEntryState.confirmed,
+            status: Status.success,
+            postedAt: new Date(),
+          },
+        });
+
+        return walletEntry;
+      },
+      {
+        isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
+      },
+    );
+  }
+
   // TODO Include amount calculations:
   async listWallets(
     listWalletAccountsParams: WalletServiceV1.ListWalletAccountsParamsDto,
@@ -87,5 +116,11 @@ export class WalletService {
     ]);
 
     return [items, total];
+  }
+
+  async releaseFunds(releaseFundsParams: WalletServiceV1.ReleaseFundsParamsDto) {
+    return await this.prismaService.walletEntry.delete({
+      where: { id: releaseFundsParams.walletEntryId },
+    });
   }
 }
